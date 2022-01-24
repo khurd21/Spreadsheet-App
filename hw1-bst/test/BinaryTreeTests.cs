@@ -20,7 +20,7 @@ public class BinaryTreeTests
     [InlineData("42 68 0 32 12", 5)]
     [InlineData("42 68 0 32 12 12 68", 5)]
     [InlineData("", 0)]
-    public void TestInsertListConstructor(string input, uint expected)
+    public void TestNumItems(string input, uint expected)
     {
         BinaryTree bst = new BinaryTree(input);
         Assert.Equal<uint>(expected, bst.numItems);
@@ -69,9 +69,24 @@ public class BinaryTreeTests
     [InlineData("9", 1)]
     [InlineData("42 68 0 32 12", 4)]
     [InlineData("4 68 0 1 2 3 54", 5)]
+    [InlineData("1 2 3 4 5 6 7 8 9", 9)]
     public void TestGetNumLevels(string input, uint expected)
     {
         BinaryTree bst = new BinaryTree(input);
         Assert.Equal<uint>(expected, bst.getNumLevels());
+    }
+
+    /// <summary>
+    /// Tests the <c>theoreticalHeight</c> method for the <c>BinaryTree</c> class.
+    /// </summary>
+    [Theory]
+    [InlineData("", 0)]
+    [InlineData("4", 1)]
+    [InlineData("42 68 0 32 12", 2)]
+    [InlineData("1 2 3 4 5 6 7 8 9", 3)]
+    public void TestTheoreticalHeight(string input, uint expected)
+    {
+        BinaryTree bst = new BinaryTree(input);
+        Assert.Equal<uint>(expected, bst.theoreticalHeight());
     }
 }

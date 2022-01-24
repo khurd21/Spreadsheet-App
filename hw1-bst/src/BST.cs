@@ -77,6 +77,17 @@ public class BinaryTree
     }
 
     /// <summary>
+    /// Returns the minimum possible height the tree can be if
+    /// all nodes were perfectly balanced.
+    /// Input: None.
+    /// Output: The minimum possible height of the tree.
+    /// </summary>
+    public uint theoreticalHeight()
+    {
+        return (uint)Math.Floor(Math.Log2(numItems));
+    }
+
+    /// <summary>
     /// Writes the contents of the tree to the console in ascending order.
     /// </summary>
     public void inorderTraversal()
