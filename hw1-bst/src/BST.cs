@@ -11,10 +11,10 @@ namespace BST;
 public class BinaryTree
 {
 
-    private Node root;
+    public Node root {get; private set;}
     public uint numItems {get; private set;}
 
-    private class Node
+    public class Node
     {
         public uint data;
         public Node left;
@@ -39,8 +39,43 @@ public class BinaryTree
         string[] dataArray = data.Split(' ');
         foreach (string s in dataArray)
         {
-            // Insert(uint.Parse(s));
+            if (s != "")
+            {
+                uint num = uint.Parse(s);
+                this.Insert(num);
+            }
         }
+    }
+
+    /// <summary>
+    /// Writes the contents of the tree to the console in ascending order.
+    /// </summary>
+    public void inorderTraversal()
+    {
+        if (root == null)
+        {
+            Console.WriteLine("Empty tree");
+        }
+        else
+        {
+            inorderTraversal(root);
+            Console.Write("\r\n");
+        }
+    }
+
+    /// <summary>
+    /// Writes the contents of the tree to the console in ascending order.
+    /// Input: the node in which to begin the inorder traversal.
+    /// </summary>
+    private void inorderTraversal(Node node)
+    {
+        if (node == null)
+        {
+            return;
+        }
+        inorderTraversal(node.left);
+        Console.Write($"{node.data} ");
+        inorderTraversal(node.right);
     }
 
     /// <summary>
@@ -73,11 +108,27 @@ public class BinaryTree
         }
         else if (data < node.data)
         {
-            Insert(node.left, data);
+            if (node.left != null)
+            {
+                Insert(node.left, data);
+            }
+            else
+            {
+                node.left = new Node(data);
+                ++numItems;
+            }
         }
         else if (data > node.data)
         {
-            Insert(node.right, data);
+            if (node.right != null)
+            {
+                Insert(node.right, data);
+            }
+            else
+            {
+                node.right = new Node(data);
+                ++numItems;
+            }
         }
         else
         {
