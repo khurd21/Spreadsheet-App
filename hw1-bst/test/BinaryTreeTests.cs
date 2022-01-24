@@ -60,4 +60,18 @@ public class BinaryTreeTests
 
         Assert.Equal(expected, stringWriter.ToString());
     }
+
+    /// <summary>
+    /// Tests the <c>getNumLevels</c> method for the <c>BinaryTree</c> class.
+    /// </summary>
+    [Theory]
+    [InlineData("", 0)]
+    [InlineData("9", 1)]
+    [InlineData("42 68 0 32 12", 4)]
+    [InlineData("4 68 0 1 2 3 54", 5)]
+    public void TestGetNumLevels(string input, uint expected)
+    {
+        BinaryTree bst = new BinaryTree(input);
+        Assert.Equal<uint>(expected, bst.getNumLevels());
+    }
 }

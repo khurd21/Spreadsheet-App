@@ -48,6 +48,35 @@ public class BinaryTree
     }
 
     /// <summary>
+    /// Calculates the height of the tree and returns its value.
+    /// Input: None.
+    /// Output: The height of the tree.
+    /// </summary>
+    public uint getNumLevels()
+    {
+        return getNumLevels(this.root);
+    }
+
+    /// <summary>
+    /// Calculates the height of the tree and returns its value.
+    /// Input: a <c>Node</c> object.
+    /// Output: the height of the tree.
+    /// </summary>
+    private uint getNumLevels(Node node)
+    {
+        if (node == null)
+        {
+            return 0;
+        }
+        else
+        {
+            uint leftLevel = getNumLevels(node.left);
+            uint rightLevel = getNumLevels(node.right);
+            return 1 + Math.Max(leftLevel, rightLevel);
+        }
+    }
+
+    /// <summary>
     /// Writes the contents of the tree to the console in ascending order.
     /// </summary>
     public void inorderTraversal()
