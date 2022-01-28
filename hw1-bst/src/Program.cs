@@ -30,9 +30,10 @@ namespace BST
 
         private static void Main()
         {
-            BinaryTree bst = new BinaryTree();
+            Console.Write("Enter a list of numbers (separated by spaces): ");
+            string input = Console.ReadLine();
+            BinaryTree bst = new BinaryTree(input);
 
-            string input;
             do
             {
                 displayBSTStats(bst);
