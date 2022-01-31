@@ -1,11 +1,14 @@
 /// <summary>
 /// Program to run Unique application.
 /// </summary>
-/// <copyright file="Program.cs" company="WSU Cpts 321"></copyright>
+/// <copyryght file="Program.cs" company="Washington State University">
+/// Copyright (C) Kyle Hurd - Washington State University
+/// Cpts 321 Spring 2022
+/// </copyright>
 
 namespace Unique;
 
-static class Program
+public static class Program
 {
     /// <summary>
     ///  The main entry point for the application.
@@ -17,5 +20,5 @@ static class Program
         // see https://aka.ms/applicationconfiguration.
         ApplicationConfiguration.Initialize();
         Application.Run(new UniqueForm());
-    }    
+    }
 }

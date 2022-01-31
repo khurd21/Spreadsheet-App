@@ -28,11 +28,31 @@ partial class UniqueForm
     /// </summary>
     private void InitializeComponent()
     {
-        this.components = new System.ComponentModel.Container();
-        this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-        this.ClientSize = new System.Drawing.Size(800, 450);
-        this.Text = "Form1";
+            this.primaryTextBox = new System.Windows.Forms.RichTextBox();
+            this.SuspendLayout();
+            // 
+            // primaryTextBox
+            // 
+            this.primaryTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.primaryTextBox.Location = new System.Drawing.Point(0, 0);
+            this.primaryTextBox.Name = "primaryTextBox";
+            this.primaryTextBox.Size = new System.Drawing.Size(800, 450);
+            this.primaryTextBox.TabIndex = 0;
+            this.primaryTextBox.Text = "";
+            // 
+            // UniqueForm
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 32F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.primaryTextBox);
+            this.Name = "UniqueForm";
+            this.Text = "Kyle Hurd - 11684695";
+            this.ResumeLayout(false);
+
     }
 
     #endregion
+
+    private RichTextBox primaryTextBox;
 }

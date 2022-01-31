@@ -3,9 +3,9 @@
 /// </summary>
 /// <copyright file="UniqueTest.cs" company="WSU Cpts 321"></copyright>
 
-using NUnit.Framework;
-
 namespace Unique.Test;
+
+using NUnit.Framework;
 
 public class Tests
 {
