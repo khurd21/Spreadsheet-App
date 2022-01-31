@@ -1,3 +1,8 @@
+/// <summary>
+/// Unit tests for Unique class.
+/// </summary>
+/// <copyright file="UniqueTest.cs" company="WSU Cpts 321"></copyright>
+
 using NUnit.Framework;
 
 namespace Unique.Test;

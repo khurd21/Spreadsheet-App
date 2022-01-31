@@ -1,6 +1,6 @@
 ﻿namespace Unique;
 
-partial class Form1
+partial class UniqueForm
 {
     /// <summary>
     ///  Required designer variable.
