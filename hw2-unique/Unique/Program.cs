@@ -1,17 +1,18 @@
-/// <summary>
-/// Program to run Unique application.
-/// </summary>
-/// <copyryght file="Program.cs" company="Washington State University">
-/// Copyright (C) Kyle Hurd - Washington State University
-/// Cpts 321 Spring 2022
-/// </copyright>
+// <copyright file="Program.cs" company="Washington State University">
+// Copyright (C) Kyle Hurd - Washington State University
+// Cpts 321 Spring 2022
+// </copyright>
 
 namespace Unique;
 
+
+/// <summary>
+/// The main program.
+/// </summary>
 public static class Program
 {
     /// <summary>
-    ///  The main entry point for the application.
+    /// The main entry point for the application.
     /// </summary>
     [STAThread]
     private static void Main()

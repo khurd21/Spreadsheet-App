@@ -39,6 +39,7 @@ partial class UniqueForm
             this.primaryTextBox.Size = new System.Drawing.Size(800, 450);
             this.primaryTextBox.TabIndex = 0;
             this.primaryTextBox.Text = "";
+            this.primaryTextBox.ReadOnly = true;
             // 
             // UniqueForm
             // 
