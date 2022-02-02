@@ -1,0 +1,19 @@
+{
+    "$schema": "https://raw.githubusercontent.com/DotNetAnalyzers/StyleCopAnalyzers/master/StyleCop.Analyzers/StyleCop.Analyzers/Settings/stylecop.schema.json",
+    "settings": {
+        "documentationRules": {
+            "companyName": "Washington State University",
+            "copyrightText": "Copyright (C) {name} - {companyName}\n{className} {year}",
+            "variables": {
+                "name": "Kyle Hurd",
+                "className": "Cpts 321",
+                "year": "Spring 2022"
+            },
+        "documentPrivateElements": true,
+        "documentPrivateFields": true
+        },
+        "orderingRules": {
+            "usingDirectivesPlacement": "outsideNamespace" }
+    }
+
+}
