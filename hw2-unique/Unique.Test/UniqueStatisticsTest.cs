@@ -1,4 +1,4 @@
-// <copyright file="UniqueTest.cs" company="Washington State University">
+// <copyright file="UniqueStatisticsTest.cs" company="Washington State University">
 // Copyright (C) Kyle Hurd - Washington State University
 // Cpts 321 Spring 2022
 // </copyright>
@@ -6,7 +6,6 @@ namespace Unique.Test;
 
 using NUnit.Framework;
 using System;
-using System.Threading.Tasks;
 using System.Collections.Generic;
 using Unique;
 
@@ -22,15 +21,20 @@ public class TestUniqueStatistics
     /// </summary>
     private static readonly object[] TestCases =
     {
-        new object[] { new List<int> { 1, 1, 2, 2, 3, 4, 4 }, 1, (object)UniqueStatistics.DistinctIntegersHashSet },
+        new object[] { new List<int> { 1, 1, 2, 2, 3, 4, 4 },  4, (object)UniqueStatistics.DistinctIntegersHashSet },
         new object[] { new List<int> { 1, 2, 3, 4, 5, 6 },     6, (object)UniqueStatistics.DistinctIntegersHashSet },
-        new object[] { new List<int> { 1, 1, 1, 1, 1, 1, 1 },  0, (object)UniqueStatistics.DistinctIntegersHashSet },
-        new object[] { new List<int> { 1, 1, 2, 2, 3, 4, 4 },  1, (object)UniqueStatistics.DistinctIntegersList },
+        new object[] { new List<int> { 1, 1, 1, 1, 1, 1, 1 },  1, (object)UniqueStatistics.DistinctIntegersHashSet },
+        new object[] { new List<int> { },                      0, (object)UniqueStatistics.DistinctIntegersHashSet },
+
+        new object[] { new List<int> { 1, 1, 2, 2, 3, 4, 4 },  4, (object)UniqueStatistics.DistinctIntegersList },
         new object[] { new List<int> { 1, 2, 3, 4, 5, 6 },     6, (object)UniqueStatistics.DistinctIntegersList },
-        new object[] { new List<int> { 1, 1, 1, 1, 1, 1, 1 },  0, (object)UniqueStatistics.DistinctIntegersList },
-        new object[] { new List<int> { 1, 1, 2, 2, 3, 4, 4 }, 1, (object)UniqueStatistics.DistinctIntegersSorted },
+        new object[] { new List<int> { 1, 1, 1, 1, 1, 1, 1 },  1, (object)UniqueStatistics.DistinctIntegersList },
+        new object[] { new List<int> { },                      0, (object)UniqueStatistics.DistinctIntegersHashSet },
+
+        new object[] { new List<int> { 1, 1, 2, 2, 3, 4, 4 },  4, (object)UniqueStatistics.DistinctIntegersSorted },
         new object[] { new List<int> { 1, 2, 3, 4, 5, 6 },     6, (object)UniqueStatistics.DistinctIntegersSorted },
-        new object[] { new List<int> { 1, 1, 1, 1, 1, 1, 1 },  0, (object)UniqueStatistics.DistinctIntegersSorted },
+        new object[] { new List<int> { 1, 1, 1, 1, 1, 1, 1 },  1, (object)UniqueStatistics.DistinctIntegersSorted },
+        new object[] { new List<int> { },                      0, (object)UniqueStatistics.DistinctIntegersHashSet },
     };
 
     /// <summary>
@@ -50,11 +54,11 @@ public class TestUniqueStatistics
     {
         UniqueStatistics stats = new UniqueStatistics(size: size, max: max);
         Assert.AreEqual(stats.Array.Count, size);
-        Parallel.ForEach<int>(stats.Array, val =>
+        foreach (int val in stats.Array)
         {
             Assert.IsTrue(val <= max);
             Assert.IsTrue(val >= 0);
-        });
+        }
     }
 
     /// <summary>
@@ -63,9 +67,10 @@ public class TestUniqueStatistics
     /// </summary>
     /// <param name="input">The list to calculate the number of distinct numbers.</param>
     /// <param name="expected">The expected result of unique numbers.</param>
+    /// <param name="method">The method to be tested.</param>
     [Test]
     [TestCaseSource(nameof(TestCases))]
-    public void TestDistinctIntegersHashSet(List<int> input, int expected, Func<List<int>, int> method)
+    public void TestDistinctIntegers(List<int> input, int expected, Func<List<int>, int> method)
     {
         Assert.AreEqual(expected, method(input));
     }
