@@ -19,17 +19,15 @@ using System;
 /// </summary>
 public class UniqueStatistics
 {
-    private List<int> array;
-
     /// <summary>
-    /// Constructor for UniqueStatistics class.
+    /// Initializes a new instance of the <see cref="UniqueStatistics"/> class.
     /// </summary>
     /// <param name="size">The capacity for the List.</param>
     /// <param name="max">The threshold value to be generated [0,max].</param>
     /// <param name="init">If true, randomly initialize array, otherwise leave empty.</param>
     public UniqueStatistics(int size = 10, int max = 20000, bool init = true)
     {
-        this.array = new List<int>(size);
+        this.Array = new List<int>(size);
         if (init == true)
         {
             this.RandomlyInitializeArray(size, max);
@@ -37,21 +35,84 @@ public class UniqueStatistics
     }
 
     /// <summary>
-    /// An accessor for the private List array.
+    /// Gets an accessor for the private List array.
     /// </summary>
-    /// <returns>this.array</returns>
+    /// <returns>this.array.</returns>
     public List<int> Array
     {
-        get
-        {
-            return this.array;
-        }
+        get;
 
         // internal is used for testing purposes only.
-        internal set
+        internal set;
+    }
+
+    /// <summary>
+    /// Returns the number of unique values in the array.
+    /// Implemented by using a HashSet to store the unique values.
+    /// The number of items in the set will be the number of unique values.
+    /// </summary>
+    /// <param name="array">The list of integers to be analyzed.</param>
+    /// <returns>The number of distinct values within <c>this.array</c>.</returns>
+    public static int DistinctIntegersHashSet(List<int> array)
+    {
+        HashSet<int> set = new HashSet<int>();
+        array.ForEach(x => set.Add(x));
+        return set.Count;
+    }
+
+    /// <summary>
+    /// Returns the number of unique values in the array.
+    /// Implemented by using this.array and not introducing any additional
+    /// space that is not a constant.
+    /// </summary>
+    /// <param name="array">The list of integers to be analyzed.</param>
+    /// <returns>The number of distinct values within <c>this.array</c>.</returns>
+    public static int DistinctIntegersList(List<int> array)
+    {
+        int count = 0;
+        for (int i = 0; i < array.Count; ++i)
         {
-            this.array = value;
+            bool found = false;
+            for (int j = i + 1; j < array.Count; ++j)
+            {
+                if (array[i] == array[j])
+                {
+                    found = true;
+                    break;
+                }
+            }
+
+            count += found ? 0 : 1;
         }
+
+        return count;
+    }
+
+    /// <summary>
+    /// Returns the number of unique values in the array.
+    /// Implemented by first sorting the array and then counting the number
+    /// of unique values.
+    /// </summary>
+    /// <param name="array">The list of integers to be analyzed.</param>
+    /// <returns>The number of distinct values within <c>this.array</c>.</returns>
+    public static int DistinctIntegersSorted(List<int> array)
+    {
+        array.Sort();
+
+        int count = 0, front = 0, back = 0;
+        while (back < array.Count)
+        {
+            front = back;
+            ++back;
+            while (back < array.Count && array[front] == array[back])
+            {
+                ++back;
+            }
+
+            ++count;
+        }
+
+        return count;
     }
 
     /// <summary>
@@ -62,38 +123,12 @@ public class UniqueStatistics
     /// <param name="max">The max threshold [0, max].</param>
     private void RandomlyInitializeArray(int size, int max)
     {
-    }
+        Random random = new Random();
 
-    /// <summary>
-    /// Returns the number of unique values in the array.
-    /// Implemented by using a HashSet to store the unique values.
-    /// The number of items in the set will be the number of unique values.
-    /// </summary>
-    /// <returns>The number of distinct values within <c>this.array</c>.</returns>
-    public static int DistinctIntegersHashSet(List<int> array)
-    {
-        return int.MaxValue;
-    }
-
-    /// <summary>
-    /// Returns the number of unique values in the array.
-    /// Implemented by using this.array and not introducing any additional
-    /// space that is not a constant.
-    /// </summary>
-    /// <returns>The number of distinct values within <c>this.array</c>.</returns>
-    public static int DistinctIntegersList(List<int> array)
-    {
-        return int.MaxValue;
-    }
-
-    /// <summary>
-    /// Returns the number of unique values in the array.
-    /// Implemented by first sorting the array and then counting the number
-    /// of unique values.
-    /// </summary>
-    /// <returns>The number of distinct values within <c>this.array</c>.</returns>
-    public static int DistinctIntegersSorted(List<int> array)
-    {
-        return int.MaxValue;
+        this.Array = new List<int>(size);
+        for (int i = 0; i < size; ++i)
+        {
+            this.Array.Add(random.Next(max));
+        }
     }
 }
