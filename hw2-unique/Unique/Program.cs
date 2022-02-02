@@ -3,8 +3,7 @@
 // Cpts 321 Spring 2022
 // </copyright>
 
-namespace Unique;
-
+namespace Unique.Forms;
 
 /// <summary>
 /// The main program.

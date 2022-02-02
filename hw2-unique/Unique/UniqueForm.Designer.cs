@@ -1,4 +1,4 @@
-﻿namespace Unique;
+﻿namespace Unique.Forms;
 
 partial class UniqueForm
 {
@@ -28,18 +28,19 @@ partial class UniqueForm
     /// </summary>
     private void InitializeComponent()
     {
-            this.primaryTextBox = new System.Windows.Forms.RichTextBox();
+            this.primaryTextBox = new System.Windows.Forms.TextBox();
+            this.Load += new EventHandler(UniqueForm_Load);
             this.SuspendLayout();
             // 
             // primaryTextBox
             // 
             this.primaryTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.primaryTextBox.Location = new System.Drawing.Point(0, 0);
+            this.primaryTextBox.Multiline = true;
             this.primaryTextBox.Name = "primaryTextBox";
+            this.primaryTextBox.ReadOnly = true;
             this.primaryTextBox.Size = new System.Drawing.Size(800, 450);
             this.primaryTextBox.TabIndex = 0;
-            this.primaryTextBox.Text = "";
-            this.primaryTextBox.ReadOnly = true;
             // 
             // UniqueForm
             // 
@@ -50,10 +51,11 @@ partial class UniqueForm
             this.Name = "UniqueForm";
             this.Text = "Kyle Hurd - 11684695";
             this.ResumeLayout(false);
+            this.PerformLayout();
 
     }
 
     #endregion
 
-    private RichTextBox primaryTextBox;
+    private TextBox primaryTextBox;
 }
