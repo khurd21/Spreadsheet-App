@@ -38,6 +38,7 @@ x64/
 *.log
 *.vspscc
 *.vs
+*.vscode
 *.vssscc
 .builds
 *.pidb
