@@ -3,10 +3,10 @@
 // Cpts 321 Spring 2022
 // </copyright>
 
-namespace Fibonacci;
+namespace Notepad.Forms;
 
 /// <summary>
-/// Entry point for the application.
+/// The main program.
 /// </summary>
 public static class Program
 {
@@ -19,6 +19,6 @@ public static class Program
         // To customize application configuration such as set high DPI settings or default font,
         // see https://aka.ms/applicationconfiguration.
         ApplicationConfiguration.Initialize();
-        Application.Run(new Forms.MainPage());
+        Application.Run(new MainForm());
     }
 }

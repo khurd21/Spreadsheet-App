@@ -3,7 +3,6 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows</TargetFramework>
-    <RootNamespace>Fibonacci</RootNamespace>
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -20,6 +19,5 @@
   <ItemGroup>
     <AdditionalFiles Include="../../stylecop.json" />
   </ItemGroup>
-
 
 </Project>

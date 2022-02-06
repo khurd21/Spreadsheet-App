@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Fibonacci\Fibonacci.csproj" />
+    <ProjectReference Include="..\Notepad\Notepad.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,11 +1,6 @@
-﻿// <copyright file="MainPage.Designer.cs" company="Washington State University">
-// Copyright (C) Kyle Hurd - Washington State University
-// Cpts 321 Spring 2022
-// </copyright>
+﻿namespace Notepad.Forms;
 
-namespace Fibonacci.Forms;
-
-partial class MainPage
+partial class MainForm
 {
     /// <summary>
     ///  Required designer variable.

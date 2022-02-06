@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Notepad", "Notepad", "{B8DE42A2-D5B2-4F12-8AA6-9C0FFADFFBFD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notepad", "Notepad\Notepad\Notepad.csproj", "{820B12DE-144A-4568-A529-93B2FB594E42}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notepad.Test", "Notepad\Notepad.Test\Notepad.Test.csproj", "{761AFFE8-A7A9-4B24-BA1F-E8C49B80B09B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{820B12DE-144A-4568-A529-93B2FB594E42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{820B12DE-144A-4568-A529-93B2FB594E42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{820B12DE-144A-4568-A529-93B2FB594E42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{820B12DE-144A-4568-A529-93B2FB594E42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{761AFFE8-A7A9-4B24-BA1F-E8C49B80B09B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{761AFFE8-A7A9-4B24-BA1F-E8C49B80B09B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{761AFFE8-A7A9-4B24-BA1F-E8C49B80B09B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{761AFFE8-A7A9-4B24-BA1F-E8C49B80B09B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{820B12DE-144A-4568-A529-93B2FB594E42} = {B8DE42A2-D5B2-4F12-8AA6-9C0FFADFFBFD}
+		{761AFFE8-A7A9-4B24-BA1F-E8C49B80B09B} = {B8DE42A2-D5B2-4F12-8AA6-9C0FFADFFBFD}
+	EndGlobalSection
+EndGlobal
