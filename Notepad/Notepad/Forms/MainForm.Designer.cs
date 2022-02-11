@@ -30,12 +30,11 @@ partial class MainForm
     {
             this.menuStripPrimary = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.loadFromFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.loadFibonacciNumbersfirst5ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.LoadFromFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadFibonacciNumbersfirst50ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadFibonacciNumbersfirst100ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.saveFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.fileToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.SaveFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.textBoxPrimary = new System.Windows.Forms.TextBox();
             this.menuStripPrimary.SuspendLayout();
             this.SuspendLayout();
@@ -54,56 +53,54 @@ partial class MainForm
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.loadFromFileToolStripMenuItem,
-            this.loadFibonacciNumbersfirst5ToolStripMenuItem,
+            this.LoadFromFileToolStripMenuItem,
+            this.loadFibonacciNumbersfirst50ToolStripMenuItem,
             this.loadFibonacciNumbersfirst100ToolStripMenuItem,
             this.toolStripSeparator1,
-            this.saveFileToolStripMenuItem,
-            this.fileToolStripMenuItem1});
+            this.SaveFileToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(71, 38);
             this.fileToolStripMenuItem.Text = "File";
             // 
-            // loadFromFileToolStripMenuItem
+            // LoadFromFileToolStripMenuItem
             // 
-            this.loadFromFileToolStripMenuItem.Name = "loadFromFileToolStripMenuItem";
-            this.loadFromFileToolStripMenuItem.Size = new System.Drawing.Size(529, 44);
-            this.loadFromFileToolStripMenuItem.Text = "Load from file....";
+            this.LoadFromFileToolStripMenuItem.Name = "LoadFromFileToolStripMenuItem";
+            this.LoadFromFileToolStripMenuItem.Size = new System.Drawing.Size(529, 44);
+            this.LoadFromFileToolStripMenuItem.Text = "Load from file....";
+            this.LoadFromFileToolStripMenuItem.Click += new System.EventHandler(this.LoadFromFileToolStripMenuItem_Click);
             // 
-            // loadFibonacciNumbersfirst5ToolStripMenuItem
+            // loadFibonacciNumbersfirst50ToolStripMenuItem
             // 
-            this.loadFibonacciNumbersfirst5ToolStripMenuItem.Name = "loadFibonacciNumbersfirst5ToolStripMenuItem";
-            this.loadFibonacciNumbersfirst5ToolStripMenuItem.Size = new System.Drawing.Size(529, 44);
-            this.loadFibonacciNumbersfirst5ToolStripMenuItem.Text = "Load fibonacci numbers (first 5)....";
+            this.loadFibonacciNumbersfirst50ToolStripMenuItem.Name = "loadFibonacciNumbersfirst50ToolStripMenuItem";
+            this.loadFibonacciNumbersfirst50ToolStripMenuItem.Size = new System.Drawing.Size(529, 44);
+            this.loadFibonacciNumbersfirst50ToolStripMenuItem.Text = "Load fibonacci numbers (first 50)....";
+            this.loadFibonacciNumbersfirst50ToolStripMenuItem.Click += new System.EventHandler(this.LoadFibonacciNumbersfirst50ToolStripMenuItem_Click);
             // 
             // loadFibonacciNumbersfirst100ToolStripMenuItem
             // 
             this.loadFibonacciNumbersfirst100ToolStripMenuItem.Name = "loadFibonacciNumbersfirst100ToolStripMenuItem";
             this.loadFibonacciNumbersfirst100ToolStripMenuItem.Size = new System.Drawing.Size(529, 44);
             this.loadFibonacciNumbersfirst100ToolStripMenuItem.Text = "Load fibonacci numbers (first 100)....";
+            this.loadFibonacciNumbersfirst100ToolStripMenuItem.Click += new System.EventHandler(this.LoadFibonacciNumbersfirst100ToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(526, 6);
             // 
-            // saveFileToolStripMenuItem
+            // SaveFileToolStripMenuItem
             // 
-            this.saveFileToolStripMenuItem.Name = "saveFileToolStripMenuItem";
-            this.saveFileToolStripMenuItem.Size = new System.Drawing.Size(529, 44);
-            this.saveFileToolStripMenuItem.Text = "Save file....";
-            // 
-            // fileToolStripMenuItem1
-            // 
-            this.fileToolStripMenuItem1.Name = "fileToolStripMenuItem1";
-            this.fileToolStripMenuItem1.Size = new System.Drawing.Size(529, 44);
-            this.fileToolStripMenuItem1.Text = "File";
+            this.SaveFileToolStripMenuItem.Name = "SaveFileToolStripMenuItem";
+            this.SaveFileToolStripMenuItem.Size = new System.Drawing.Size(529, 44);
+            this.SaveFileToolStripMenuItem.Text = "Save file....";
+            this.SaveFileToolStripMenuItem.Click += new System.EventHandler(this.SaveFileToolStripMenuItem_Click);
             // 
             // textBoxPrimary
             // 
             this.textBoxPrimary.Location = new System.Drawing.Point(13, 43);
             this.textBoxPrimary.Multiline = true;
             this.textBoxPrimary.Name = "textBoxPrimary";
+            this.textBoxPrimary.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.textBoxPrimary.Size = new System.Drawing.Size(915, 831);
             this.textBoxPrimary.TabIndex = 1;
             // 
@@ -129,11 +126,10 @@ partial class MainForm
 
     private MenuStrip menuStripPrimary;
     private ToolStripMenuItem fileToolStripMenuItem;
-    private ToolStripMenuItem loadFromFileToolStripMenuItem;
-    private ToolStripMenuItem loadFibonacciNumbersfirst5ToolStripMenuItem;
+    private ToolStripMenuItem LoadFromFileToolStripMenuItem;
+    private ToolStripMenuItem loadFibonacciNumbersfirst50ToolStripMenuItem;
     private ToolStripMenuItem loadFibonacciNumbersfirst100ToolStripMenuItem;
     private ToolStripSeparator toolStripSeparator1;
-    private ToolStripMenuItem saveFileToolStripMenuItem;
-    private ToolStripMenuItem fileToolStripMenuItem1;
+    private ToolStripMenuItem SaveFileToolStripMenuItem;
     private TextBox textBoxPrimary;
 }
