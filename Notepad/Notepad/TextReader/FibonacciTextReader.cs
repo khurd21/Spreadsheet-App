@@ -8,6 +8,7 @@ namespace Notepad.TextReader;
 using System.IO;
 using System.Collections.Concurrent;
 using System.Numerics;
+using System.Text;
 
 /// <summary>
 /// Initializes the <see cref="FibonacciTextReader"/> class.
@@ -37,7 +38,7 @@ public class FibonacciTextReader : TextReader
         }
 
         this.Capacity = capacity;
-        this.capacityLeft = capacity;
+        this.capacityLeft = 0;
         if (fibonacciItems.Count < 3)
         {
             fibonacciItems.TryAdd(0, 0);
@@ -68,12 +69,12 @@ public class FibonacciTextReader : TextReader
             return -1;
         }
 
-        if (fibonacciItems.TryGetValue(3, out BigInteger result))
+        if (!fibonacciItems.ContainsKey(n))
         {
-            return result;
+            fibonacciItems.TryAdd(n, FibonacciOf(n - 1) + FibonacciOf(n - 2));
         }
 
-        return 0;
+        return fibonacciItems[n];
     }
 
     /// <summary>
@@ -82,8 +83,13 @@ public class FibonacciTextReader : TextReader
     /// <returns>The next fibonacci number in sequence or null if reached capacity.</returns>
     public override string? ReadLine()
     {
-        this.capacityLeft--;
-        return null;
+        if (this.Capacity <= this.capacityLeft)
+        {
+            return null;
+        }
+
+        this.capacityLeft++;
+        return $"{this.capacityLeft - 1}: {FibonacciOf(this.capacityLeft - 1)}";
     }
 
 /// <summary>
@@ -92,6 +98,13 @@ public class FibonacciTextReader : TextReader
 /// <returns>The string of fibonacci numbers up to its capacity.</returns>
     public override string ReadToEnd()
     {
-        return base.ReadToEnd();
+        StringBuilder sb = new StringBuilder();
+        string? line;
+        while ((line = this.ReadLine()) != null)
+        {
+            sb.AppendLine(line);
+        }
+
+        return sb.ToString();
     }
 }

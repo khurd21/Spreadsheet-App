@@ -108,7 +108,6 @@ public class FibonacciTextReaderTests
     {
         FibonacciTextReader fibonacciTextReader = new FibonacciTextReader(100);
         string content = fibonacciTextReader.ReadToEnd();
-        Console.WriteLine(content);
         string[] lines = content.Split("\r\n");
 
         for (int i = 0; i < capacity; ++i)
