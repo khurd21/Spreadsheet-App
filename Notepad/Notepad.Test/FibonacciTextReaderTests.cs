@@ -81,14 +81,14 @@ public class FibonacciTextReaderTests
     [TestCase(3)]
     [TestCase(25)]
     [TestCase(100)]
-    public void TestReadline(int capacity)
+    public void TestReadLine(int capacity)
     {
         FibonacciTextReader fibonacciTextReader = new FibonacciTextReader(capacity);
         for (int i = 0; i < capacity; ++i)
         {
             string content = fibonacciTextReader.ReadLine() ?? "ReadLine() returned null.";
             BigInteger expected = FibonacciTextReader.FibonacciOf(i);
-            Assert.AreEqual($"{i}: {expected}\n", content);
+            Assert.AreEqual($"{i}: {expected}", content);
         }
 
         Assert.IsNull(fibonacciTextReader.ReadLine());
@@ -108,7 +108,8 @@ public class FibonacciTextReaderTests
     {
         FibonacciTextReader fibonacciTextReader = new FibonacciTextReader(100);
         string content = fibonacciTextReader.ReadToEnd();
-        string[] lines = content.Split('\n');
+        Console.WriteLine(content);
+        string[] lines = content.Split("\r\n");
 
         for (int i = 0; i < capacity; ++i)
         {
