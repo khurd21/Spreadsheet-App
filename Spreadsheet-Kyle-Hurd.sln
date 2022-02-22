@@ -3,9 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Spreadsheet-Kyle-Hurd", "Spreadsheet-Kyle-Hurd", "{F61E0472-36E0-4772-8F93-0052057C37BC}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Spreadsheet-Kyle-Hurd", "Spreadsheet-Kyle-Hurd", "{538E0BEB-87B3-4B58-BF56-DFEB0241185A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spreadsheet-Kyle-Hurd", "Spreadsheet-Kyle-Hurd\Spreadsheet-Kyle-Hurd\Spreadsheet-Kyle-Hurd.csproj", "{DD6AE07D-01D2-4854-A29D-E486446F286C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpreadsheetEngine", "Spreadsheet-Kyle-Hurd\SpreadsheetEngine\SpreadsheetEngine.csproj", "{DA48DEED-4670-4F3C-9ABB-E1BF8805CC9A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpreadsheetEngine.Test", "Spreadsheet-Kyle-Hurd\SpreadsheetEngine.Test\SpreadsheetEngine.Test.csproj", "{68FF7359-10A1-4DFA-B117-31A0E5479DA1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spreadsheet-Kyle-Hurd", "Spreadsheet-Kyle-Hurd\Spreadsheet-UI\Spreadsheet-Kyle-Hurd.csproj", "{A4CEF468-6F74-40E8-91F6-AE5BF75AA8DE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -16,12 +20,22 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{DD6AE07D-01D2-4854-A29D-E486446F286C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DD6AE07D-01D2-4854-A29D-E486446F286C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DD6AE07D-01D2-4854-A29D-E486446F286C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DD6AE07D-01D2-4854-A29D-E486446F286C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA48DEED-4670-4F3C-9ABB-E1BF8805CC9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA48DEED-4670-4F3C-9ABB-E1BF8805CC9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA48DEED-4670-4F3C-9ABB-E1BF8805CC9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA48DEED-4670-4F3C-9ABB-E1BF8805CC9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68FF7359-10A1-4DFA-B117-31A0E5479DA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68FF7359-10A1-4DFA-B117-31A0E5479DA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68FF7359-10A1-4DFA-B117-31A0E5479DA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68FF7359-10A1-4DFA-B117-31A0E5479DA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4CEF468-6F74-40E8-91F6-AE5BF75AA8DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4CEF468-6F74-40E8-91F6-AE5BF75AA8DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4CEF468-6F74-40E8-91F6-AE5BF75AA8DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4CEF468-6F74-40E8-91F6-AE5BF75AA8DE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{DD6AE07D-01D2-4854-A29D-E486446F286C} = {F61E0472-36E0-4772-8F93-0052057C37BC}
+		{DA48DEED-4670-4F3C-9ABB-E1BF8805CC9A} = {538E0BEB-87B3-4B58-BF56-DFEB0241185A}
+		{68FF7359-10A1-4DFA-B117-31A0E5479DA1} = {538E0BEB-87B3-4B58-BF56-DFEB0241185A}
+		{A4CEF468-6F74-40E8-91F6-AE5BF75AA8DE} = {538E0BEB-87B3-4B58-BF56-DFEB0241185A}
 	EndGlobalSection
 EndGlobal
