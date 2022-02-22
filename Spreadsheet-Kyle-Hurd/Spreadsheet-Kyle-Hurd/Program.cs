@@ -3,7 +3,7 @@
 // Cpts 321 Spring 2022
 // </copyright>
 
-namespace Spreadsheet_Kyle_Hurd;
+namespace Spreadsheet_Kyle_Hurd.Forms;
 
 /// <summary>
 /// Initializes the <see cref="Program"/> class.

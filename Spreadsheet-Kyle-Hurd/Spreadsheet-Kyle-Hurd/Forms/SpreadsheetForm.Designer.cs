@@ -1,4 +1,4 @@
-﻿namespace Spreadsheet_Kyle_Hurd;
+﻿namespace Spreadsheet_Kyle_Hurd.Forms;
 
 partial class SpreadsheetForm
 {
@@ -28,11 +28,81 @@ partial class SpreadsheetForm
     /// </summary>
     private void InitializeComponent()
     {
-        this.components = new System.ComponentModel.Container();
-        this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-        this.ClientSize = new System.Drawing.Size(800, 450);
-        this.Text = "Form1";
+            this.DataGridView = new System.Windows.Forms.DataGridView();
+            this.A = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.B = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.C = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.D = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            ((System.ComponentModel.ISupportInitialize)(this.DataGridView)).BeginInit();
+            this.SuspendLayout();
+            // 
+            // DataGridView
+            // 
+            this.DataGridView.AllowUserToAddRows = false;
+            this.DataGridView.AllowUserToDeleteRows = false;
+            this.DataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.DataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.A,
+            this.B,
+            this.C,
+            this.D});
+            this.DataGridView.Location = new System.Drawing.Point(12, 12);
+            this.DataGridView.Name = "DataGridView";
+            this.DataGridView.RowHeadersWidth = 82;
+            this.DataGridView.RowTemplate.Height = 41;
+            this.DataGridView.Size = new System.Drawing.Size(1105, 824);
+            this.DataGridView.TabIndex = 0;
+            // 
+            // A
+            // 
+            this.A.HeaderText = "A";
+            this.A.MinimumWidth = 10;
+            this.A.Name = "A";
+            this.A.Width = 200;
+            // 
+            // B
+            // 
+            this.B.HeaderText = "B";
+            this.B.MinimumWidth = 10;
+            this.B.Name = "B";
+            this.B.Width = 200;
+            // 
+            // C
+            // 
+            this.C.HeaderText = "C";
+            this.C.MinimumWidth = 10;
+            this.C.Name = "C";
+            this.C.Width = 200;
+            // 
+            // D
+            // 
+            this.D.HeaderText = "D";
+            this.D.MinimumWidth = 10;
+            this.D.Name = "D";
+            this.D.Width = 200;
+            // 
+            // SpreadsheetForm
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 32F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(1120, 848);
+            this.Controls.Add(this.DataGridView);
+            this.Name = "SpreadsheetForm";
+            this.Text = "Spreadsheet";
+            this.Load += new System.EventHandler(this.SpreadsheetForm_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.DataGridView)).EndInit();
+            this.ResumeLayout(false);
+
     }
 
     #endregion
+
+    private DataGridView DataGridView;
+    private DataGridViewTextBoxColumn A;
+    private DataGridViewTextBoxColumn B;
+    private DataGridViewTextBoxColumn C;
+    private DataGridViewTextBoxColumn D;
 }
