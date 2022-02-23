@@ -13,15 +13,36 @@ using System.ComponentModel;
 public abstract class Cell : INotifyPropertyChanged
 {
     /// <summary>
+    /// Index of the row this cell is in.
+    /// </summary>
+    private readonly int rowIndex;
+
+    /// <summary>
+    /// Index of the column this cell is in.
+    /// </summary>
+    private readonly int columnIndex;
+
+    /// <summary>
+    /// String handled by Text property.
+    /// </summary>
+    private string text;
+
+    /// <summary>
+    /// String handled by Value property.
+    /// </summary>
+    private string value;
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="Cell"/> class.
     /// </summary>
     /// <param name="rowIndex">The row index this cell will represent.</param>
     /// <param name="columnIndex">The column index this cell will represent.</param>
     public Cell(int rowIndex, int columnIndex)
     {
-        this.RowIndex = rowIndex;
-        this.ColumnIndex = columnIndex;
-        this.Text = string.Empty;
+        this.rowIndex = rowIndex;
+        this.columnIndex = columnIndex;
+        this.text = string.Empty;
+        this.value = string.Empty;
     }
 
     /// <summary>
@@ -30,9 +51,10 @@ public abstract class Cell : INotifyPropertyChanged
     /// </summary>
     public Cell()
     {
-        this.RowIndex = -1;
-        this.ColumnIndex = -1;
-        this.Text = string.Empty;
+        this.rowIndex = -1;
+        this.columnIndex = -1;
+        this.text = string.Empty;
+        this.value = string.Empty;
     }
 
     /// <summary>
@@ -43,12 +65,24 @@ public abstract class Cell : INotifyPropertyChanged
     /// <summary>
     /// Gets the index pertaining to the row of the cell.
     /// </summary>
-    public int RowIndex { get; private set; }
+    public int RowIndex
+    {
+        get
+        {
+            return this.rowIndex;
+        }
+    }
 
     /// <summary>
     /// Gets the index pertaining to the column of the cell.
     /// </summary>
-    public int ColumnIndex { get; private set; }
+    public int ColumnIndex
+    {
+        get
+        {
+            return this.columnIndex;
+        }
+    }
 
     /// <summary>
     /// Gets or sets the value of the cell. Sets the value of the cell if the value is
@@ -58,18 +92,18 @@ public abstract class Cell : INotifyPropertyChanged
     {
         get
         {
-            return this.Text;
+            return this.text;
         }
 
         set
         {
-            if (this.Text == value)
+            if (this.text == value)
             {
                 return;
             }
 
-            this.Text = value;
-            this.OnPropertyChanged(nameof(this.Text));
+            this.text = value;
+            this.OnPropertyChanged(nameof(this.text));
         }
     }
 
@@ -81,18 +115,18 @@ public abstract class Cell : INotifyPropertyChanged
     {
         get
         {
-            return this.Value;
+            return this.value;
         }
 
         protected set
         {
-            if (this.Value == value)
+            if (this.value == value)
             {
                 return;
             }
 
-            this.Value = value;
-            this.OnPropertyChanged(nameof(this.Value));
+            this.value = value;
+            this.OnPropertyChanged(nameof(this.value));
         }
     }
 

@@ -10,17 +10,27 @@ using System.ComponentModel;
 /// <summary>
 /// Initializes the <see cref="Spreadsheet"/> class.
 /// </summary>
-public class Spreadsheet : Cell
+public class Spreadsheet
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="Spreadsheet"/> class.
+    /// The set qualification for <see cref="Cell"/> is internal, so only this class can
+    /// access the constructor. I was not able to make it readonly due to constraint of a
+    /// abstract class.
     /// </summary>
     /// <param name="numRows">The number of rows for the Spreadsheet application.</param>
     /// <param name="numCols">The number of columns for the Spreadsheet application.</param>
     public Spreadsheet(int numRows, int numCols)
     {
-        // To implement Cells Array.
         this.Cells = new Cell[numRows, numCols];
+
+        for (int i = 0; i < numRows; i++)
+        {
+            for (int j = 0; j < numCols; j++)
+            {
+                this.Cells[i, j] = new SpreadsheetCell(i, j);
+            }
+        }
     }
 
     /// <summary>
@@ -55,11 +65,17 @@ public class Spreadsheet : Cell
     /// </summary>
     /// <param name="row">The row to access.</param>
     /// <param name="col">The column to access.</param>
-    /// <returns>The cell at the specific row and column.</returns>
-    private Cell GetCell(int row, int col)
+    /// <returns>The cell at the specific row and column, null if does not exist.</returns>
+    private Cell? GetCell(int row, int col)
     {
-        // probably want to return null if not found
-        return this.Cells[row, col];
+        try
+        {
+            return this.Cells[row, col];
+        }
+        catch (IndexOutOfRangeException)
+        {
+            return null;
+        }
     }
 
     /// <summary>
