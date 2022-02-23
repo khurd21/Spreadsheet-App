@@ -3,7 +3,7 @@
 // Cpts 321 Spring 2022
 // </copyright>
 
-namespace SpreadsheetEngine;
+namespace Spreadsheet_Kyle_Hurd.SpreadsheetEngine;
 
 using System.ComponentModel;
 
@@ -25,6 +25,17 @@ public abstract class Cell : INotifyPropertyChanged
     }
 
     /// <summary>
+    /// Initializes a new instance of the <see cref="Cell"/> class.
+    /// The index of the cell is automatically set to -1.
+    /// </summary>
+    public Cell()
+    {
+        this.RowIndex = -1;
+        this.ColumnIndex = -1;
+        this.Text = string.Empty;
+    }
+
+    /// <summary>
     /// Occurs when a property value changes.j
     /// </summary>
     public event PropertyChangedEventHandler? PropertyChanged = (sender, e) => { };
@@ -32,12 +43,12 @@ public abstract class Cell : INotifyPropertyChanged
     /// <summary>
     /// Gets the index pertaining to the row of the cell.
     /// </summary>
-    public int RowIndex { get; }
+    public int RowIndex { get; private set; }
 
     /// <summary>
     /// Gets the index pertaining to the column of the cell.
     /// </summary>
-    public int ColumnIndex { get; }
+    public int ColumnIndex { get; private set; }
 
     /// <summary>
     /// Gets or sets the value of the cell. Sets the value of the cell if the value is
