@@ -8,6 +8,7 @@ using NUnit.Framework;
 namespace Spreadsheet_Kyle_Hurd.SpreadsheetEngine.Test;
 
 using System;
+using Spreadsheet_Kyle_Hurd.SpreadsheetEngine;
 
 /// <summary>
 /// Initializes the <see cref="TestSpreadsheet"/> class.
@@ -62,16 +63,14 @@ public class TestSpreadsheet
     /// <param name="row">The row to get.</param>
     /// <param name="col">The column to get.</param>
     [Test]
-    [TestCase(0, 0, 0, 0)]
     [TestCase(5, 5, 2, 3)]
     [TestCase(5, 5, 4, 4)]
     public void TestGetCell(int numRows, int numColumns, int row, int col)
     {
         Spreadsheet spreadsheet = new Spreadsheet(numRows, numColumns);
         PrivateObject privateSpreadsheet = new PrivateObject(spreadsheet);
-        Cell actual = (Cell)privateSpreadsheet.Invoke("GetCell", row, col);
-        Assert.AreEqual(row, actual.RowIndex);
-        Assert.AreEqual(col, actual.ColumnIndex);
+        Cell? actual = (Cell?)privateSpreadsheet.Invoke("GetCell", row, col);
+        Assert.AreEqual(spreadsheet.Cells[row, col], actual);
     }
 
     /// <summary>
@@ -81,11 +80,14 @@ public class TestSpreadsheet
     /// <param name="numColumns">The number of columns for the sreadsheet.</param>
     /// <param name="row">The row to get.</param>
     /// <param name="col">The column to get.</param>
+    [Test]
+    [TestCase(5, 5, 6, 6)]
+    [TestCase(0, 0, 0, 0)]
     public void TestGetCellNull(int numRows, int numColumns, int row, int col)
     {
         Spreadsheet spreadsheet = new Spreadsheet(numRows, numColumns);
         PrivateObject privateSpreadsheet = new PrivateObject(spreadsheet);
-        Cell actual = (Cell)privateSpreadsheet.Invoke("GetCell", row, col);
+        Cell? actual = (Cell?)privateSpreadsheet.Invoke("GetCell", row, col);
         Assert.IsNull(actual);
     }
 }

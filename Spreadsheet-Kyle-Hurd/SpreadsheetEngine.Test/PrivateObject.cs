@@ -35,7 +35,7 @@ public class PrivateObject
     /// <param name="methodName">The method of the private field to be invoked.</param>
     /// <param name="args">The arguments that belong to the method name.</param>
     /// <returns>The value of the private field.</returns>
-    public object Invoke(string methodName, params object[] args)
+    public object? Invoke(string methodName, params object[] args)
     {
         var methodInfo = this.o.GetType().GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Instance);
         if (methodInfo == null)
@@ -43,6 +43,6 @@ public class PrivateObject
             throw new Exception($"Method'{methodName}' not found is class '{this.o.GetType()}'");
         }
 
-        return methodInfo.Invoke(this.o, args) ?? throw new Exception($"Method'{methodName}' returned null");
+        return methodInfo.Invoke(this.o, args);
     }
 }
