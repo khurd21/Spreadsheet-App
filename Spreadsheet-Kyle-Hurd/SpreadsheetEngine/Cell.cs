@@ -58,7 +58,7 @@ public abstract class Cell : INotifyPropertyChanged
             }
 
             this.Text = value;
-            this.PropertyChanged(this, new PropertyChangedEventArgs(nameof(this.Text)));
+            this.OnPropertyChanged(nameof(this.Text));
         }
     }
 
@@ -81,7 +81,23 @@ public abstract class Cell : INotifyPropertyChanged
             }
 
             this.Value = value;
-            this.PropertyChanged(this, new PropertyChangedEventArgs(nameof(this.Value)));
+            this.OnPropertyChanged(nameof(this.Value));
         }
+    }
+
+    /// <summary>
+    /// Function to be called when a property value changes. This helps
+    /// avoid the null reference exception.
+    /// </summary>
+    /// <param name="propertyName">The property name that is to trigger event change.</param>
+    private void OnPropertyChanged(string propertyName)
+    {
+        var handler = this.PropertyChanged;
+        if (handler != null)
+        {
+            handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }
