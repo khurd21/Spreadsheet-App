@@ -118,7 +118,7 @@ public abstract class Cell : INotifyPropertyChanged
             return this.value;
         }
 
-        protected set
+        set
         {
             if (this.value == value)
             {

@@ -79,12 +79,45 @@ public class Spreadsheet
     }
 
     /// <summary>
+    /// Gets the cell index given a character from A to Z.
+    /// </summary>
+    /// <param name="c">The character to be converted to an index.</param>
+    /// <returns>The index of the specific letter.</returns>
+    private int GetAZIndex(char c)
+    {
+        return c - 'A';
+    }
+
+    /// <summary>
     /// Sets the cell at the specified row and column if there is a property change.
     /// </summary>
     /// <param name="sender">The object sending the property change.</param>
     /// <param name="e">The event arguments.</param>
     private void CellPropertyChange(object sender, PropertyChangedEventArgs e)
     {
-        // To implement Cell Property Change.
+        Cell? cell = sender as SpreadsheetCell;
+        if (cell == null)
+        {
+            return;
+        }
+
+        Cell? spreadsheetCell = this.GetCell(cell.RowIndex, cell.ColumnIndex);
+        if (spreadsheetCell != null)
+        {
+            if (spreadsheetCell.Text.Length > 2 && spreadsheetCell.Text[0] == '=')
+            {
+                int row = int.Parse(spreadsheetCell.Text.Substring(2));
+                int col = this.GetAZIndex(spreadsheetCell.Text[1]);
+                Cell? cellToCopy = this.GetCell(row, col);
+                if (cellToCopy != null)
+                {
+                    spreadsheetCell.Value = cellToCopy.Text;
+                }
+            }
+            else
+            {
+                spreadsheetCell.Value = spreadsheetCell.Text;
+            }
+        }
     }
 }
