@@ -40,11 +40,6 @@ public class Spreadsheet
     public event PropertyChangedEventHandler? PropertyChanged = (sender, e) => { };
 
     /// <summary>
-    /// Gets the Spreadsheet array containing a list of Cell objects.
-    /// </summary>
-    public Cell[,] Cells { get; private set; }
-
-    /// <summary>
     /// Gets the number of rows in the Spreadsheet application.
     /// </summary>
     public int NumRows
@@ -65,6 +60,11 @@ public class Spreadsheet
             return this.Cells.GetLength(1);
         }
     }
+
+    /// <summary>
+    /// Gets or sets the Spreadsheet array containing a list of Cell objects.
+    /// </summary>
+    private Cell[,] Cells { get; set; }
 
     /// <summary>
     /// Updates the cell value the specified row and column.

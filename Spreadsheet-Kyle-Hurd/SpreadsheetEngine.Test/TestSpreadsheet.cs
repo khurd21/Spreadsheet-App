@@ -70,7 +70,12 @@ public class TestSpreadsheet
         Spreadsheet spreadsheet = new Spreadsheet(numRows, numColumns);
         PrivateObject privateSpreadsheet = new PrivateObject(spreadsheet);
         Cell? actual = (Cell?)privateSpreadsheet.Invoke("GetCell", row, col);
-        Assert.AreEqual(spreadsheet.Cells[row, col], actual);
+        Assert.NotNull(actual);
+        if (actual != null)
+        {
+            Assert.AreEqual(actual.RowIndex, row);
+            Assert.AreEqual(actual.ColumnIndex, col);
+        }
     }
 
     /// <summary>
