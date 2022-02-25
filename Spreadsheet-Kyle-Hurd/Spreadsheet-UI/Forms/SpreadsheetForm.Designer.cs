@@ -33,6 +33,7 @@ partial class SpreadsheetForm
             this.B = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.C = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.D = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ButtonRandomPopulate = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.DataGridView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -53,8 +54,9 @@ partial class SpreadsheetForm
             this.DataGridView.Name = "DataGridView";
             this.DataGridView.RowHeadersWidth = 82;
             this.DataGridView.RowTemplate.Height = 41;
-            this.DataGridView.Size = new System.Drawing.Size(1105, 824);
+            this.DataGridView.Size = new System.Drawing.Size(1105, 772);
             this.DataGridView.TabIndex = 0;
+            this.DataGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView_CellValueChanged);
             // 
             // A
             // 
@@ -84,11 +86,23 @@ partial class SpreadsheetForm
             this.D.Name = "D";
             this.D.Width = 200;
             // 
+            // ButtonRandomPopulate
+            // 
+            this.ButtonRandomPopulate.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.ButtonRandomPopulate.Location = new System.Drawing.Point(453, 790);
+            this.ButtonRandomPopulate.Name = "ButtonRandomPopulate";
+            this.ButtonRandomPopulate.Size = new System.Drawing.Size(214, 46);
+            this.ButtonRandomPopulate.TabIndex = 1;
+            this.ButtonRandomPopulate.Text = "Populate Me";
+            this.ButtonRandomPopulate.UseVisualStyleBackColor = true;
+            this.ButtonRandomPopulate.Click += new System.EventHandler(this.ButtonRandomPopulate_Click);
+            // 
             // SpreadsheetForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 32F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1120, 848);
+            this.Controls.Add(this.ButtonRandomPopulate);
             this.Controls.Add(this.DataGridView);
             this.Name = "SpreadsheetForm";
             this.Text = "Spreadsheet";
@@ -105,4 +119,5 @@ partial class SpreadsheetForm
     private DataGridViewTextBoxColumn B;
     private DataGridViewTextBoxColumn C;
     private DataGridViewTextBoxColumn D;
+    private Button ButtonRandomPopulate;
 }
