@@ -71,11 +71,11 @@ public partial class SpreadsheetForm : Form
     /// <param name="e">The event args.</param>
     private void InitRows(int start, int end, object sender, EventArgs e)
     {
-        Parallel.For(start, end + 1, i =>
+        for (int i = start; i <= end; i++)
         {
             this.DataGridView.Rows.Add();
             this.DataGridView.Rows[i - start].HeaderCell.Value = i.ToString();
-        });
+        }
     }
 
     /// <summary>

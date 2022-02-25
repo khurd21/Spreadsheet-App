@@ -54,7 +54,7 @@ partial class SpreadsheetForm
             this.DataGridView.Name = "DataGridView";
             this.DataGridView.RowHeadersWidth = 82;
             this.DataGridView.RowTemplate.Height = 41;
-            this.DataGridView.Size = new System.Drawing.Size(1105, 772);
+            this.DataGridView.Size = new System.Drawing.Size(1266, 772);
             this.DataGridView.TabIndex = 0;
             this.DataGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView_CellValueChanged);
             // 
@@ -89,7 +89,7 @@ partial class SpreadsheetForm
             // ButtonRandomPopulate
             // 
             this.ButtonRandomPopulate.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.ButtonRandomPopulate.Location = new System.Drawing.Point(453, 790);
+            this.ButtonRandomPopulate.Location = new System.Drawing.Point(538, 790);
             this.ButtonRandomPopulate.Name = "ButtonRandomPopulate";
             this.ButtonRandomPopulate.Size = new System.Drawing.Size(214, 46);
             this.ButtonRandomPopulate.TabIndex = 1;
@@ -101,7 +101,7 @@ partial class SpreadsheetForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 32F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1120, 848);
+            this.ClientSize = new System.Drawing.Size(1290, 848);
             this.Controls.Add(this.ButtonRandomPopulate);
             this.Controls.Add(this.DataGridView);
             this.Name = "SpreadsheetForm";
