@@ -24,14 +24,20 @@ public class Spreadsheet
     {
         this.Cells = new Cell[numRows, numCols];
 
-        for (int i = 0; i < numRows; i++)
+        Parallel.For(0, numRows, i =>
         {
             for (int j = 0; j < numCols; j++)
             {
                 this.Cells[i, j] = new SpreadsheetCell(i, j);
+                this.Cells[i, j].PropertyChanged += this.CellPropertyChanged;
             }
-        }
+        });
     }
+
+    /// <summary>
+    /// Occurs when a property value changes.
+    /// </summary>
+    public event PropertyChangedEventHandler? PropertyChanged = (sender, e) => { };
 
     /// <summary>
     /// Gets the Spreadsheet array containing a list of Cell objects.
@@ -58,6 +64,63 @@ public class Spreadsheet
         {
             return this.Cells.GetLength(1);
         }
+    }
+
+    /// <summary>
+    /// Updates the cell value the specified row and column.
+    /// </summary>
+    /// <param name="row">The row to find the cell.</param>
+    /// <param name="col">The column to find the cell.</param>
+    /// <param name="value">The value to update the cell with.</param>
+    /// <returns>0 if no errors, -1 otherwise.</returns>
+    public int UpdateCellValue(int row, int col, string value)
+    {
+        Cell? cell = this.GetCell(row, col);
+        if (cell != null)
+        {
+            cell.Value = value;
+            return 0;
+        }
+        else
+        {
+            return -1;
+        }
+    }
+
+    /// <summary>
+    /// Updates the cell text at the specified row and column.
+    /// </summary>
+    /// <param name="row">The row to find the cell.</param>
+    /// <param name="col">The column to find the cell.</param>
+    /// <param name="text">The text to set the cell to.</param>
+    /// <returns>0 if no errors, -1 otherwise.</returns>
+    public int UpdateCellText(int row, int col, string text)
+    {
+        Cell? cell = this.GetCell(row, col);
+        if (cell != null)
+        {
+            cell.Text = text;
+            return 0;
+        }
+        else
+        {
+            return -1;
+        }
+    }
+
+    /// <summary>
+    /// Clears all cell content in the Spreadsheet application.
+    /// </summary>
+    public void ClearCells()
+    {
+        Parallel.For(0, this.NumRows, i =>
+        {
+            for (int j = 0; j < this.NumColumns; j++)
+            {
+                this.Cells[i, j].Text = string.Empty;
+                this.Cells[i, j].Value = string.Empty;
+            }
+        });
     }
 
     /// <summary>
@@ -93,7 +156,7 @@ public class Spreadsheet
     /// </summary>
     /// <param name="sender">The object sending the property change.</param>
     /// <param name="e">The event arguments.</param>
-    private void CellPropertyChange(object sender, PropertyChangedEventArgs e)
+    private void CellPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         Cell? cell = sender as SpreadsheetCell;
         if (cell == null)
@@ -106,8 +169,8 @@ public class Spreadsheet
         {
             if (spreadsheetCell.Text.Length > 2 && spreadsheetCell.Text[0] == '=')
             {
-                int row = int.Parse(spreadsheetCell.Text.Substring(2));
-                int col = this.GetAZIndex(spreadsheetCell.Text[1]);
+                int row = int.Parse(spreadsheetCell.Text.Substring(2)) - 1;
+                int col = this.GetAZIndex(char.ToUpper(spreadsheetCell.Text[1]));
                 Cell? cellToCopy = this.GetCell(row, col);
                 if (cellToCopy != null)
                 {
@@ -118,6 +181,8 @@ public class Spreadsheet
             {
                 spreadsheetCell.Value = spreadsheetCell.Text;
             }
+
+            this.PropertyChanged?.Invoke(spreadsheetCell, new PropertyChangedEventArgs(nameof(Cell)));
         }
     }
 }

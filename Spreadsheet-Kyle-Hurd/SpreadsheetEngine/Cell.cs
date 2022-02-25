@@ -141,6 +141,7 @@ public abstract class Cell : INotifyPropertyChanged
         if (handler != null)
         {
             handler(this, new PropertyChangedEventArgs(propertyName));
+            return;
         }
 
         this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
