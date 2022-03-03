@@ -9,6 +9,7 @@ namespace Spreadsheet_Kyle_Hurd.SpreadsheetEngine.Test;
 
 using System;
 using Spreadsheet_Kyle_Hurd.SpreadsheetEngine;
+using Spreadsheet_Kyle_Hurd.SpreadsheetEngine.Cells;
 
 /// <summary>
 /// Initializes the <see cref="TestSpreadsheet"/> class.

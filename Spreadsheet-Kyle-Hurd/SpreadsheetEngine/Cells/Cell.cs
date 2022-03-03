@@ -3,7 +3,7 @@
 // Cpts 321 Spring 2022
 // </copyright>
 
-namespace Spreadsheet_Kyle_Hurd.SpreadsheetEngine;
+namespace Spreadsheet_Kyle_Hurd.SpreadsheetEngine.Cells;
 
 using System.ComponentModel;
 
