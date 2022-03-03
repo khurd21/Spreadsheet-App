@@ -6,6 +6,7 @@
 namespace Spreadsheet_Kyle_Hurd.SpreadsheetEngine;
 
 using System.ComponentModel;
+using SpreadsheetEngine.Cells;
 
 /// <summary>
 /// Initializes the <see cref="Spreadsheet"/> class.
@@ -65,27 +66,6 @@ public class Spreadsheet
     /// Gets or sets the Spreadsheet array containing a list of Cell objects.
     /// </summary>
     private Cell[,] Cells { get; set; }
-
-    /// <summary>
-    /// Updates the cell value the specified row and column.
-    /// </summary>
-    /// <param name="row">The row to find the cell.</param>
-    /// <param name="col">The column to find the cell.</param>
-    /// <param name="value">The value to update the cell with.</param>
-    /// <returns>0 if no errors, -1 otherwise.</returns>
-    public int UpdateCellValue(int row, int col, string value)
-    {
-        Cell? cell = this.GetCell(row, col);
-        if (cell != null)
-        {
-            cell.Value = value;
-            return 0;
-        }
-        else
-        {
-            return -1;
-        }
-    }
 
     /// <summary>
     /// Updates the cell text at the specified row and column.

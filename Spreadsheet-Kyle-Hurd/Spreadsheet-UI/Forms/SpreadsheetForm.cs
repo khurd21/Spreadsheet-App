@@ -5,6 +5,7 @@
 
 namespace Spreadsheet_Kyle_Hurd.Forms;
 
+using SpreadsheetEngine.Cells;
 using SpreadsheetEngine;
 
 /// <summary>
