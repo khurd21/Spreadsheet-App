@@ -20,13 +20,13 @@ public class TestExpressionTree
     {
         new object[]
         {
-            "A1 + B6",
+            "A1 + B6 + B6",
             new Tuple<string, double>[]
             {
                 new Tuple<string, double>("A1", 1.0),
                 new Tuple<string, double>("B6", 2.0),
             },
-            3.0,
+            5.0,
         },
         new object[]
         {

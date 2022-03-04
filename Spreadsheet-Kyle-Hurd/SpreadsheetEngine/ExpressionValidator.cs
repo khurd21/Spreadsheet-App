@@ -227,7 +227,7 @@ public static class ExpressionValidator
     /// </summary>
     /// <param name="expression">The expression to format.</param>
     /// <returns>The formatted expression.</returns>
-    private static string Format(string expression)
+    public static string Format(string expression)
     {
         bool isNumber = false;
         string formattedExpression = string.Empty;
