@@ -6,7 +6,6 @@
 namespace Spreadsheet_Kyle_Hurd.SpreadsheetEngine.Test;
 
 using NUnit.Framework;
-using MUT = Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using System;
 
@@ -91,8 +90,7 @@ public class TestExpressionValidator
     [TestCase("32..42A321/2", "32..42`A321`/2")]
     public void TestFormat(string input, string expected)
     {
-        MUT.PrivateType pt = new MUT.PrivateType(typeof(ExpressionValidator));
-        string? actual = pt.InvokeStatic("Format", new object[] { input }) as string;
+        string actual = ExpressionValidator.Format(input);
         Assert.AreEqual(expected, actual);
     }
 }

@@ -70,11 +70,7 @@ public class ExpressionTree
     public void SetVariableValue(string variable, double value)
     {
         variable = variable.ToLower();
-        Nodes.Node<double>? node = FindVariableNode(variable, this.Root);
-        if (node != null)
-        {
-            (node as Nodes.VariableNode) !.Value = value;
-        }
+        SetVariableNodes(variable, value, this.Root);
     }
 
     /// <summary>
@@ -178,38 +174,27 @@ public class ExpressionTree
     /// Finds the Node with the given name.
     /// </summary>
     /// <param name="variable">The variable name for which to search.</param>
+    /// <param name="value">The value to set variable to in tree.</param>
     /// <param name="node">The current node method is at during its traversal.</param>
-    /// <returns>The node pertaining to the Variable name.</returns>
-    private static Nodes.Node<double>? FindVariableNode(string variable, Nodes.Node<double>? node)
+    private static void SetVariableNodes(string variable, double value, Nodes.Node<double>? node)
     {
-        if (node is Nodes.VariableNode)
+        if (node == null)
         {
-            Nodes.VariableNode? varNode = node as Nodes.VariableNode;
-            if (varNode != null && varNode.Variable == variable)
+            return;
+        }
+
+        if (node is Nodes.VariableNode variableNode)
+        {
+            if (variableNode.Variable == variable)
             {
-                return node;
+                variableNode.Value = value;
             }
         }
 
-        if (node is Nodes.OperatorNode)
+        if (node is Nodes.OperatorNode operatorNode)
         {
-            Nodes.OperatorNode? opNode = node as Nodes.OperatorNode;
-            if (opNode != null)
-            {
-                Nodes.Node<double>? left = FindVariableNode(variable, opNode.Left);
-                if (left != null)
-                {
-                    return left;
-                }
-
-                Nodes.Node<double>? right = FindVariableNode(variable, opNode.Right);
-                if (right != null)
-                {
-                    return right;
-                }
-            }
+            SetVariableNodes(variable, value, operatorNode.Left);
+            SetVariableNodes(variable, value, operatorNode.Right);
         }
-
-        return null;
     }
 }
