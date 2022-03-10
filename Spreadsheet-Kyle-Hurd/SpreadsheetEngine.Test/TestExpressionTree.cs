@@ -20,7 +20,7 @@ public class TestExpressionTree
     {
         new object[]
         {
-            "A1 + B6 + B6",
+            "A1 + B6 * B6",
             new Tuple<string, double>[]
             {
                 new Tuple<string, double>("A1", 1.0),
@@ -30,33 +30,43 @@ public class TestExpressionTree
         },
         new object[]
         {
-            "A1 - B6 - 3",
+            "A1 / B6 - 3",
             new Tuple<string, double>[]
             {
                 new Tuple<string, double>("A1", 1.0),
                 new Tuple<string, double>("B6", 2.0),
             },
-            -4.0,
+            -2.5,
         },
         new object[]
         {
-            "A1 * B6",
+            "A1 / (B6 - 3)",
+            new Tuple<string, double>[]
+            {
+                new Tuple<string, double>("A1", 1.0),
+                new Tuple<string, double>("B6", 2.0),
+            },
+            -1.0,
+        },
+        new object[]
+        {
+            "(A1 * B6 / A1)",
             new Tuple<string, double>[]
             {
                 new Tuple<string, double>("A1", 7.0),
                 new Tuple<string, double>("B6", 2.0),
             },
-            14.0,
+            2.0,
         },
         new object[]
         {
-            "A1 / B6",
+            "A1 - (B6 + 0 - 2) / 45 * (B6 - 3)",
             new Tuple<string, double>[]
             {
-                new Tuple<string, double>("A1", 7.0),
+                new Tuple<string, double>("A1", 21.0),
                 new Tuple<string, double>("B6", 2.0),
             },
-            3.5,
+            21.0,
         },
     };
 
@@ -97,8 +107,8 @@ public class TestExpressionTree
     [Test]
     [TestCase("1 + 2 + 3", 6.0)]
     [TestCase("4 * 2 * 3", 24.0)]
-    [TestCase("16 / 4 / 2", 2.0)]
-    [TestCase("9 - 0 - 1 - 12", -4.0)]
+    [TestCase("16 / (4 + 4)", 2.0)]
+    [TestCase("9 - 0 + 1 * 12", 21.0)]
     [TestCase("0/10", 0.0)]
     [TestCase("9/0", double.PositiveInfinity)]
     [TestCase("0/0", double.NaN)]
@@ -146,10 +156,10 @@ public class TestExpressionTree
     /// </summary>
     /// <param name="expression">The expression to be evaluated.</param>
     [Test]
-    [TestCase("1 + 2 + A1")]
-    [TestCase("A1 * B2 * C3")]
-    [TestCase("A1 / B2 / C3")]
-    [TestCase("A1 - B2 - C3")]
+    [TestCase("1 + 2 * A1")]
+    [TestCase("A1 * B2 - C3")]
+    [TestCase("A1 / (B2 / C3)")]
+    [TestCase("(A1 * B2) - C3")]
     public void TestEvaluateWithException(string expression)
     {
         ExpressionTree tree = new ExpressionTree(expression);
