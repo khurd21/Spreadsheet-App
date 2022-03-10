@@ -82,24 +82,45 @@ public class ExpressionTree
     /// <returns>The root of the tree.</returns>
     private static Nodes.Node<double> CreateTree(List<string> tokens)
     {
-        Stack<Nodes.Node<double>> stack = new Stack<Nodes.Node<double>>();
+        Stack<Nodes.Node<double>> postfixStack = new Stack<Nodes.Node<double>>();
+
+        // Stack<Nodes.OperatorNode> operatorStack = new Stack<Nodes.OperatorNode>();
         foreach (string token in tokens)
         {
             Nodes.Node<double>? node = Nodes.NodeFactory.CreateNode(token);
+            /*if (node != null)
+            {
+                if (node is Nodes.OperatorNode)
+                {
+                    Nodes.OperatorNode opNode = (node as Nodes.OperatorNode) !;
+                    while (operatorStack.Count > 0 && operatorStack.Peek().Precedence >= opNode.Precedence)
+                    {
+                        postfixStack.Push(operatorStack.Pop());
+                    }
+
+                    operatorStack.Push(opNode);
+                }
+                else
+                {
+                    postfixStack.Push(node);
+                }
+            }*/
+
+            // Prev implementation
             if (node != null && node is Nodes.OperatorNode)
             {
                 Nodes.OperatorNode? opNode = node as Nodes.OperatorNode;
-                opNode!.Right = stack.Pop();
-                opNode!.Left = stack.Pop();
-                stack.Push(opNode);
+                opNode!.Right = postfixStack.Pop();
+                opNode!.Left = postfixStack.Pop();
+                postfixStack.Push(opNode);
             }
             else if (node != null)
             {
-                stack.Push(node);
+                postfixStack.Push(node);
             }
         }
 
-        return stack.Peek();
+        return postfixStack.Peek();
     }
 
     /// <summary>

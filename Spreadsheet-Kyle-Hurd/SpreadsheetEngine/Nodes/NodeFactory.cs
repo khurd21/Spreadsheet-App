@@ -94,21 +94,11 @@ public static class NodeFactory
             Assembly.GetAssembly(typeof(OperatorNode)) !.GetTypes()
             .Where(myType => myType.IsClass && !myType.IsAbstract && myType.IsSubclassOf(typeof(OperatorNode))))
         {
-            char? op = (char?)type.GetField("Operation")?.GetValue(null);
-
-            // `type.Name` only gets the name of the class, not the namespace.
-            string tmp = $"{type}";
-            Type? nodeType = Type.GetType(tmp);
-            if (op != null && type != null && nodeType != null)
+            OperatorNode? node = (OperatorNode?)Activator.CreateInstance(type);
+            if (node != null)
             {
-                tempDictionary.Add(op.Value, nodeType);
+                tempDictionary.Add(node.Operation, type);
             }
-        }
-
-        Console.WriteLine("Found Nodes:");
-        foreach (var item in tempDictionary)
-        {
-            Console.WriteLine($"{item.Key}, {item.Value}");
         }
 
         return tempDictionary;

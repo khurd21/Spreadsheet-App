@@ -11,16 +11,6 @@ namespace Spreadsheet_Kyle_Hurd.SpreadsheetEngine.Nodes;
 public class MultiplierNode : OperatorNode
 {
     /// <summary>
-    /// The symbol to represent the <see cref="MultiplierNode.Evaluate"/> operation in the expression.
-    /// </summary>
-    public static readonly char Operation = '*';
-
-    /// <summary>
-    /// The level of priority for the Node inheriting from <see cref="OperatorNode"/>.
-    /// </summary>
-    public static readonly int Precedence = 5;
-
-    /// <summary>
     /// Initializes a new instance of the <see cref="MultiplierNode"/> class.
     /// </summary>
     /// <param name="left">The left node for the <see cref="OperatorNode"/>.</param>
@@ -37,6 +27,16 @@ public class MultiplierNode : OperatorNode
         : base(null, null)
     {
     }
+
+    /// <summary>
+    /// Gets the symbol to represent the <see cref="MultiplierNode.Evaluate"/> operation in the expression.
+    /// </summary>
+    public override char Operation => '*';
+
+    /// <summary>
+    /// Gets the level of priority for the Node inheriting from <see cref="OperatorNode"/>.
+    /// </summary>
+    public override int Precedence => 5;
 
     /// <summary>
     /// Evaluates the node.
