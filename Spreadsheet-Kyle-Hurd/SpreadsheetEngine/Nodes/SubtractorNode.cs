@@ -16,6 +16,11 @@ public class SubtractorNode : OperatorNode
     public static readonly char Operation = '-';
 
     /// <summary>
+    /// The level of priority for the Node inheriting from <see cref="OperatorNode"/>.
+    /// </summary>
+    public static readonly int Precedence = 6;
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="SubtractorNode"/> class.
     /// </summary>
     /// <param name="left">The left node.</param>

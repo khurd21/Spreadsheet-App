@@ -5,10 +5,13 @@
 
 namespace Spreadsheet_Kyle_Hurd.SpreadsheetEngine.Nodes;
 
-using System.Collections.Generic;
-
 /// <summary>
 /// Initializes the <see cref="OperatorNode"/> class.
+/// Note, any class that inherits from OperatorNode must implement the
+/// `Operation` and `Precedence` properties. These cannot be enforeced
+/// by an interface because the properties are static variables.
+/// Precedence should follow the order of operations from the following source:
+/// https://en.cppreference.com/w/cpp/language/operator_precedence
 /// </summary>
 public abstract class OperatorNode : Node<double>
 {

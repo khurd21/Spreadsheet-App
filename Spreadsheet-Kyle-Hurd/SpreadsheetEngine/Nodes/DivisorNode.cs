@@ -16,6 +16,11 @@ public class DivisorNode : OperatorNode
     public static readonly char Operation = '/';
 
     /// <summary>
+    /// The level of priority for the Node inheriting from <see cref="OperatorNode"/>.
+    /// </summary>
+    public static readonly int Precedence = 5;
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="DivisorNode"/> class.
     /// </summary>
     /// <param name="left">The left node for the <see cref="OperatorNode"/>.</param>
