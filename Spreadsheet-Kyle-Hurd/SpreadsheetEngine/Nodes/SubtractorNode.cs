@@ -11,11 +11,6 @@ namespace Spreadsheet_Kyle_Hurd.SpreadsheetEngine.Nodes;
 public class SubtractorNode : OperatorNode
 {
     /// <summary>
-    /// The symbol to represent the <see cref="SubtractorNode.Evaluate"/> operation in the expression.
-    /// </summary>
-    public static readonly char Operation = '-';
-
-    /// <summary>
     /// Initializes a new instance of the <see cref="SubtractorNode"/> class.
     /// </summary>
     /// <param name="left">The left node.</param>
@@ -32,6 +27,16 @@ public class SubtractorNode : OperatorNode
         : base(null, null)
     {
     }
+
+    /// <summary>
+    /// Gets the symbol to represent the <see cref="SubtractorNode.Evaluate"/> operation in the expression.
+    /// </summary>
+    public override char Operation => '-';
+
+    /// <summary>
+    /// Gets the level of priority for the Node inheriting from <see cref="OperatorNode"/>.
+    /// </summary>
+    public override int Precedence => 6;
 
     /// <summary>
     /// Evaluates the node.
