@@ -82,45 +82,24 @@ public class ExpressionTree
     /// <returns>The root of the tree.</returns>
     private static Nodes.Node<double> CreateTree(List<string> tokens)
     {
-        Stack<Nodes.Node<double>> postfixStack = new Stack<Nodes.Node<double>>();
-
-        // Stack<Nodes.OperatorNode> operatorStack = new Stack<Nodes.OperatorNode>();
+        Stack<Nodes.Node<double>> stack = new Stack<Nodes.Node<double>>();
         foreach (string token in tokens)
         {
             Nodes.Node<double>? node = Nodes.NodeFactory.CreateNode(token);
-            /*if (node != null)
-            {
-                if (node is Nodes.OperatorNode)
-                {
-                    Nodes.OperatorNode opNode = (node as Nodes.OperatorNode) !;
-                    while (operatorStack.Count > 0 && operatorStack.Peek().Precedence >= opNode.Precedence)
-                    {
-                        postfixStack.Push(operatorStack.Pop());
-                    }
-
-                    operatorStack.Push(opNode);
-                }
-                else
-                {
-                    postfixStack.Push(node);
-                }
-            }*/
-
-            // Prev implementation
             if (node != null && node is Nodes.OperatorNode)
             {
                 Nodes.OperatorNode? opNode = node as Nodes.OperatorNode;
-                opNode!.Right = postfixStack.Pop();
-                opNode!.Left = postfixStack.Pop();
-                postfixStack.Push(opNode);
+                opNode!.Right = stack.Pop();
+                opNode!.Left = stack.Pop();
+                stack.Push(opNode);
             }
             else if (node != null)
             {
-                postfixStack.Push(node);
+                stack.Push(node);
             }
         }
 
-        return postfixStack.Peek();
+        return stack.Peek();
     }
 
     /// <summary>
@@ -133,13 +112,26 @@ public class ExpressionTree
     /// <exception cref="ArgumentException">Thrown when an operator in expression is invalid.</exception>
     private static List<string> BuildPostFixTokens(string expression)
     {
-        Stack<string> stack = new Stack<string>();
+        Stack<char> operators = new Stack<char>();
         List<string> tokens = new List<string>();
 
         for (int i = 0; i < expression.Length; ++i)
         {
             char c = expression[i];
-            if (char.IsDigit(c))
+            if (c == '(')
+            {
+                operators.Push(c);
+            }
+            else if (c == ')')
+            {
+                while (operators.Peek() != '(')
+                {
+                    tokens.Add(operators.Pop().ToString());
+                }
+
+                operators.Pop();
+            }
+            else if (char.IsDigit(c))
             {
                 string number = string.Empty;
                 while (i < expression.Length && (char.IsDigit(c = expression[i]) || expression[i] == '.'))
@@ -165,16 +157,24 @@ public class ExpressionTree
             }
             else if (Nodes.NodeFactory.GetOperators().Contains(c))
             {
-                Nodes.Node<double>? node = Nodes.NodeFactory.CreateNode(c.ToString());
-                if (node != null)
+                Nodes.OperatorNode? node = Nodes.NodeFactory.CreateNode(c.ToString()) as Nodes.OperatorNode;
+                if (node != null && node is Nodes.OperatorNode)
                 {
-                    while (stack.Count > 0)
+                    Nodes.OperatorNode? opNode = node as Nodes.OperatorNode;
+                    while (operators.Count > 0)
                     {
-                        var top = stack.Pop();
-                        tokens.Add(top);
+                        Nodes.OperatorNode? compareNode = Nodes.NodeFactory.CreateNode(operators.Peek().ToString()) as Nodes.OperatorNode;
+                        if (compareNode != null && opNode!.Precedence >= compareNode!.Precedence)
+                        {
+                            tokens.Add(operators.Pop().ToString());
+                        }
+                        else
+                        {
+                            break;
+                        }
                     }
 
-                    stack.Push(c.ToString());
+                    operators.Push(c);
                 }
                 else
                 {
@@ -183,9 +183,9 @@ public class ExpressionTree
             }
         }
 
-        while (stack.Count > 0)
+        while (operators.Count > 0)
         {
-            tokens.Add(stack.Pop());
+            tokens.Add(operators.Pop().ToString());
         }
 
         return tokens;
