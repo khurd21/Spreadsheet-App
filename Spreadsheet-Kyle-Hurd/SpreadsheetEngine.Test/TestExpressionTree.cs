@@ -179,9 +179,10 @@ public class TestExpressionTree
     public void TestGetVariables(string expression, string[] expected)
     {
         ExpressionTree tree = new ExpressionTree(expression);
-        var actual = tree.GetVariables();
-        Console.WriteLine($"Expected: {string.Join(", ", expected)}");
-        Console.WriteLine($"Actual: {string.Join(", ", actual)}");
-        Assert.AreEqual(expected, actual);
+        Nodes.VariableNode[] actual = tree.GetVariables();
+        for (int i = 0; i < expected.Length; i++)
+        {
+            Assert.AreEqual(expected[i], actual[i].Variable);
+        }
     }
 }
