@@ -96,4 +96,23 @@ public class TestSpreadsheet
         Cell? actual = (Cell?)privateSpreadsheet.Invoke("GetCell", row, col);
         Assert.IsNull(actual);
     }
+
+    /// <summary>
+    /// Tests the GetVariables method for returning a list of variables.
+    /// </summary>
+    /// <param name="expression">The expression under test.</param>
+    /// <param name="expected">The expexted variables to be returned from the method call.</param>
+    /// <returns></returns>
+    /// <exception cref=""></exception>
+    [Test]
+    [TestCase("A1", new string[] { "A1" ,})]
+    [TestCase("A1 + B4", new string[] { "A1", "B4" })]
+    [TestCase("C7 * B9 + 3", new string[] { "C7", "B9" })]
+    [TestCase("1+2", new string[] { })]
+    public void TestGetVariables(string expression, string[] expected)
+    {
+        ExpressionTree tree = new ExpressionTree(expression);
+        var actual = tree.GetVariables();
+        Assert.AreEqual(expected, actual);
+    }
 }

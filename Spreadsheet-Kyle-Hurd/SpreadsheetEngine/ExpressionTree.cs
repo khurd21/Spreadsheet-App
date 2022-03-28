@@ -62,6 +62,14 @@ public class ExpressionTree
         }
     }
 
+    public string[] GetVariables()
+    {
+        /*List<string> variables = new List<string>();
+        this.GetVariables(this.Root, variables);
+        return variables.ToArray();*/
+        return new string[0];
+    }
+
     /// <summary>
     /// Sets a variable in the expression tree.
     /// </summary>
@@ -71,6 +79,19 @@ public class ExpressionTree
     {
         variable = variable.ToLower();
         SetVariableNodes(variable, value, this.Root);
+    }
+
+    private void GetVariables(Nodes.Node<double> node, List<string> vars)
+    {
+        if (node.GetType() == typeof(Nodes.VariableNode))
+        {
+            vars.Add(((Nodes.VariableNode)node).Variable);
+        }
+        else if (node.GetType() == typeof(Nodes.OperatorNode))
+        {
+            GetVariables(((Nodes.OperatorNode)node).Right!, vars);
+            GetVariables(((Nodes.OperatorNode)node).Left!, vars);
+        }
     }
 
     /// <summary>
