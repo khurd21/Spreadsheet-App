@@ -11,11 +11,6 @@ namespace Spreadsheet_Kyle_Hurd.SpreadsheetEngine.Cells;
 public class SpreadsheetCell : Cell
 {
     /// <summary>
-    /// Gets the expression tree for this cell.
-    /// </summary>
-    public ExpressionTree? ExpressionTree { get; set; }
-
-    /// <summary>
     /// Initializes a new instance of the <see cref="SpreadsheetCell"/> class.
     /// </summary>
     /// <param name="rowIndex">The row index this cell will represent.</param>
@@ -33,4 +28,9 @@ public class SpreadsheetCell : Cell
         : base()
         {
         }
+
+    /// <summary>
+    /// Gets or sets the expression tree for this cell.
+    /// </summary>
+    public ExpressionTree? ExpressionTree { get; set; }
 }

@@ -100,27 +100,6 @@ public class ExpressionTree
     }
 
     /// <summary>
-    /// Gets the variables in the expression tree.
-    /// </summary>
-    /// <param name="node">The node in which to start evaluating in the tree.</param>
-    /// <param name="vars">The list of variables to add to.</param>
-    private void GetVariables(Nodes.Node<double> node, List<Nodes.VariableNode> vars)
-    {
-        if (node != null)
-        {
-            if (node is Nodes.VariableNode variableNode)
-            {
-                vars.Add(variableNode);
-            }
-            else if (node is Nodes.OperatorNode operatorNode)
-            {
-                this.GetVariables(operatorNode.Left!, vars);
-                this.GetVariables(operatorNode.Right!, vars);
-            }
-        }
-    }
-
-    /// <summary>
     /// Creates the expression tree from the given postfix expression
     /// represented as a list of tokens. Must be a valid expression before
     /// calling this method.
@@ -263,6 +242,27 @@ public class ExpressionTree
         {
             SetVariableNodes(variable, value, operatorNode.Left);
             SetVariableNodes(variable, value, operatorNode.Right);
+        }
+    }
+
+    /// <summary>
+    /// Gets the variables in the expression tree.
+    /// </summary>
+    /// <param name="node">The node in which to start evaluating in the tree.</param>
+    /// <param name="vars">The list of variables to add to.</param>
+    private void GetVariables(Nodes.Node<double> node, List<Nodes.VariableNode> vars)
+    {
+        if (node != null)
+        {
+            if (node is Nodes.VariableNode variableNode)
+            {
+                vars.Add(variableNode);
+            }
+            else if (node is Nodes.OperatorNode operatorNode)
+            {
+                this.GetVariables(operatorNode.Left!, vars);
+                this.GetVariables(operatorNode.Right!, vars);
+            }
         }
     }
 }

@@ -88,8 +88,10 @@ public class Spreadsheet
             {
                 this.PropertyChanged?.Invoke(cell, new PropertyChangedEventArgs(nameof(Cell)));
             }
+
             return 0;
         }
+
         return -1;
     }
 
@@ -106,6 +108,7 @@ public class Spreadsheet
         {
             return cell.Text;
         }
+
         return string.Empty;
     }
 
@@ -203,7 +206,7 @@ public class Spreadsheet
 
     /// <summary>
     /// Given a <see cref="Cell"/> object, this method will subscribe all other cells that are
-    /// referencing the given <see cref="Cell"/>. 
+    /// referencing the given <see cref="Cell"/>.
     /// </summary>
     /// <param name="cell">The cell for which to make the subscriptions.</param>
     /// <exception cref="NodeNotFoundException">The node could not be found with the current expression.</exception>
@@ -228,6 +231,11 @@ public class Spreadsheet
         }
     }
 
+    /// <summary>
+    /// Given a <see cref="Cell"/> object, this method will update the <see cref="Cell"/>'s <see cref="Cell.Value"/>.
+    /// </summary>
+    /// <param name="cell">The cell to set.</param>
+    /// <exception cref="NodeNotFoundException">Thrown when Node not found.</exception>
     private void SetVariables(SpreadsheetCell cell)
     {
         ExpressionTree? tree = cell.ExpressionTree;
@@ -242,6 +250,7 @@ public class Spreadsheet
                 {
                     double.TryParse(cellToSubscribe.Value, out double value);
                     variable.Value = value;
+
                     // What if the cell has a string value?
                     // Below is skeleton code if ever need be written.
                     /*if (double.TryParse(cellToSubscribe.Value, out double value))
@@ -313,6 +322,7 @@ public class Spreadsheet
                 {
                     spreadsheetCell.Value = spreadsheetCell.Text;
                 }
+
                 this.PropertyChanged?.Invoke(spreadsheetCell, new PropertyChangedEventArgs(nameof(Cell)));
             }
         }
