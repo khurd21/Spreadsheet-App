@@ -131,6 +131,19 @@ public abstract class Cell : INotifyPropertyChanged
     }
 
     /// <summary>
+    /// Notifies of a property changed given the name of the property.
+    /// </summary>
+    /// <param name="sender">The sender sending the property changed event.</param>
+    /// <param name="e">The event arguments.</param>
+    public void CellPropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName != null)
+        {
+            this.OnPropertyChanged(e.PropertyName);
+        }
+    }
+
+    /// <summary>
     /// Function to be called when a property value changes. This helps
     /// avoid the null reference exception.
     /// </summary>
@@ -143,7 +156,5 @@ public abstract class Cell : INotifyPropertyChanged
             handler(this, new PropertyChangedEventArgs(propertyName));
             return;
         }
-
-        this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

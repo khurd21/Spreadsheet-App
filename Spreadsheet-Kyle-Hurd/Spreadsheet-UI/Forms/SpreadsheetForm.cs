@@ -113,39 +113,68 @@ public partial class SpreadsheetForm : Form
             this.spreadsheet.UpdateCellText(row, column, message);
         }
 
-        Parallel.For(0, rows, (row) =>
+        for (int row = 0; row < rows; ++row)
         {
             this.spreadsheet.UpdateCellText(row, 1, $"This is cell B{row + 1}");
-        });
+        }
 
-        // Moved to other for loop as could not guarentee update of Bn cell.
-        Parallel.For(0, rows, (row) =>
+        for (int row = 0; row < rows; ++row)
         {
             this.spreadsheet.UpdateCellText(row, 0, $"=B{row + 1}");
-        });
+        }
     }
 
     /// <summary>
-    /// Upon a CellValueChanged event, the spreadsheet cell text is updated. This is to help evaluate any
-    /// equations that may be present in the cell from the user input.
+    /// Modifier when the user clicks on a cell for editing.
     /// </summary>
-    /// <param name="sender">The object sending the event.</param>
+    /// <param name="sender">The object sending the request.</param>
     /// <param name="e">The event arguments.</param>
-    private void DataGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+    /// <exception cref="Exception">Grabs any exception that may occur.</exception>
+    private void DataGridView_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
     {
         int row = e.RowIndex;
-        int column = e.ColumnIndex;
+        int col = e.ColumnIndex;
         try
         {
-            string? message = this.DataGridView[column, row].Value.ToString();
+            this.DataGridView[col, row].Value = this.spreadsheet.GetCellText(row, col);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }
+
+    /// <summary>
+    /// Modifier when the user deselects a cell for editing.
+    /// </summary>
+    /// <param name="sender">The object sending the request.</param>
+    /// <param name="e">The event arguments.</param>
+    /// <exception cref="Exception">Grabs any exception that may occur.</exception>
+    private void DataGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+    {
+        int row = e.RowIndex;
+        int col = e.ColumnIndex;
+        try
+        {
+            string? message = this.DataGridView[col, row].Value.ToString();
             if (message != null)
             {
-                this.spreadsheet.UpdateCellText(row, column, message);
+                this.spreadsheet.UpdateCellText(row, col, message);
             }
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
         }
+    }
+
+    /// <summary>
+    /// Modifier when the user clicks on the ClearGrid button. Clears the spreadsheet.
+    /// </summary>
+    /// <param name="sender">The object sending the request.</param>
+    /// <param name="e">The event arguments.</param>
+    private void ButtonClearGrid_Click(object sender, EventArgs e)
+    {
+        this.spreadsheet.ClearCells();
     }
 }

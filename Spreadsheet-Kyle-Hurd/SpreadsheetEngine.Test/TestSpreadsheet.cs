@@ -80,6 +80,30 @@ public class TestSpreadsheet
     }
 
     /// <summary>
+    /// Tests the GetCellFromName method where a cell name indicates
+    /// a cell location such as "A1".
+    /// </summary>
+    /// <param name="numRows">The number of rows in the <see cref="Spreadsheet"/>.</param>
+    /// <param name="numColumns">The number of columns in the <see cref="Spreadsheet"/>.</param>
+    /// <param name="cellName">The name of the cell to search for.</param>
+    [Test]
+    [TestCase(5, 5, "A4")]
+    [TestCase(5, 5, "b3")]
+    public void TestGetCellFromName(int numRows, int numColumns, string cellName)
+    {
+        Spreadsheet spreadsheet = new Spreadsheet(numRows, numColumns);
+        PrivateObject privateSpreadsheet = new PrivateObject(spreadsheet);
+        Cell? actual = (Cell?)privateSpreadsheet.Invoke("GetCellFromName", cellName);
+        Assert.NotNull(actual);
+        cellName = cellName.ToUpper();
+        if (actual != null)
+        {
+            Assert.AreEqual(actual.ColumnIndex, cellName[0] - 'A');
+            Assert.AreEqual(actual.RowIndex, int.Parse(cellName.Substring(1)) - 1);
+        }
+    }
+
+    /// <summary>
     /// Tests the GetCell method for returning a null value if row and column do not exist.
     /// </summary>
     /// <param name="numRows">The number of rows for the spreadsheet.</param>

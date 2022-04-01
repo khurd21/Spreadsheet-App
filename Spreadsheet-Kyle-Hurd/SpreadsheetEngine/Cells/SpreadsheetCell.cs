@@ -28,4 +28,9 @@ public class SpreadsheetCell : Cell
         : base()
         {
         }
+
+    /// <summary>
+    /// Gets or sets the expression tree for this cell.
+    /// </summary>
+    public ExpressionTree? ExpressionTree { get; set; }
 }
