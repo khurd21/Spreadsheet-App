@@ -6,6 +6,7 @@
 namespace Spreadsheet_Kyle_Hurd.SpreadsheetEngine;
 
 using System.ComponentModel;
+using System.Linq;
 using SpreadsheetEngine.Cells;
 using SpreadsheetEngine.Nodes;
 
@@ -187,18 +188,19 @@ public class Spreadsheet
     {
         if (cell.ExpressionTree != null)
         {
-            VariableNode[] variables = cell.ExpressionTree.GetVariables();
-            foreach (var treeNode in variables)
+            VariableNode[] variables = cell.ExpressionTree.GetNodes().OfType<VariableNode>().ToArray();
+            foreach (var variable in variables)
             {
-                string variable = treeNode.Variable.ToUpper();
-                Cell? cellToUnsubscribe = this.GetCellFromName(variable);
-                if (cellToUnsubscribe != null)
+                // Converting to test for Value or variable nodes.
+                if (variable != null)
                 {
-                    cellToUnsubscribe.PropertyChanged -= cell.CellPropertyChanged; // I think I need to have CellpropertyChanged for cells
-                }
-                else
-                {
-                    throw new NodeNotFoundException($"The variable {variable} was not found in the spreadsheet.");
+                    VariableNode node = (variable as VariableNode) !;
+                    string variableName = node.Variable.ToUpper();
+                    Cell? cellToUnsubscribe = this.GetCellFromName(variableName);
+                    if (cellToUnsubscribe != null)
+                    {
+                        cellToUnsubscribe.PropertyChanged -= cell.CellPropertyChanged; // I think I need to have CellpropertyChanged for cells
+                    }
                 }
             }
         }
@@ -214,18 +216,21 @@ public class Spreadsheet
     {
         if (cell.ExpressionTree != null)
         {
-            VariableNode[] variables = cell.ExpressionTree.GetVariables();
+            VariableNode[] variables = cell.ExpressionTree.GetNodes().OfType<VariableNode>().ToArray();
             foreach (var variable in variables)
             {
-                string variableName = variable.Variable.ToUpper();
-                Cell? cellToSubscribe = this.GetCellFromName(variableName);
-                if (cellToSubscribe != null)
+                if (variable != null)
                 {
-                    cellToSubscribe.PropertyChanged += cell.CellPropertyChanged;
-                }
-                else
-                {
-                    throw new NodeNotFoundException($"The variable {variableName} was not found in the spreadsheet.");
+                    string variableName = variable.Variable.ToUpper();
+                    Cell? cellToSubscribe = this.GetCellFromName(variableName);
+                    if (cellToSubscribe != null)
+                    {
+                        cellToSubscribe.PropertyChanged += cell.CellPropertyChanged;
+                    }
+                    else
+                    {
+                        throw new NodeNotFoundException($"The variable {variableName} was not found in the spreadsheet.");
+                    }
                 }
             }
         }
@@ -233,36 +238,61 @@ public class Spreadsheet
 
     /// <summary>
     /// Given a <see cref="Cell"/> object, this method will update the <see cref="Cell"/>'s <see cref="Cell.Value"/>.
+    /// Errors only thown if expression has more than one item. If the expression is a string, the value of the string
+    /// will be returned to the sender.
     /// </summary>
     /// <param name="cell">The cell to set.</param>
+    /// <returns>The value of the cell, if applicable.</returns>
     /// <exception cref="NodeNotFoundException">Thrown when Node not found.</exception>
-    private void SetVariables(SpreadsheetCell cell)
+    /// <exception cref="FormatException">Thrown when the expression is not a valid expression.</exception>
+    private string? SetVariables(SpreadsheetCell cell)
     {
         ExpressionTree? tree = cell.ExpressionTree;
         if (tree != null)
         {
-            VariableNode[] variables = tree.GetVariables();
+            // Do not filter. We need both value nodes and variable nodes in this array.
+            Node<double>[] nodes = tree.GetNodes();
+            int length = nodes.Length;
+
+            // If the expression is a string, return the string value
+            if (length == 1 && nodes[0] is VariableNode)
+            {
+                VariableNode node = (nodes[0] as VariableNode) !;
+                string variable = node.Variable.ToUpper();
+                Cell? cellToSet = this.GetCellFromName(variable);
+                if (cellToSet != null)
+                {
+                    if (!double.TryParse(cellToSet.Value, out double value))
+                    {
+                        return cellToSet.Value == string.Empty ? $"Empty Cell {variable}" : cellToSet.Value;
+                    }
+                }
+            }
+
+            // Otherwise, try to evaluate the expression
+            VariableNode[] variables = nodes.OfType<VariableNode>().ToArray();
             foreach (var variable in variables)
             {
                 string variableName = variable.Variable.ToUpper();
                 SpreadsheetCell? cellToSubscribe = this.GetCellFromName(variableName) as SpreadsheetCell;
                 if (cellToSubscribe != null)
                 {
-                    double.TryParse(cellToSubscribe.Value, out double value);
-                    variable.Value = value;
-
-                    // What if the cell has a string value?
-                    // Below is skeleton code if ever need be written.
-                    /*if (double.TryParse(cellToSubscribe.Value, out double value))
+                    if (double.TryParse(cellToSubscribe.Value, out double value))
                     {
                         tree.SetVariableValue(variable.Variable, value);
+                    }
+                    else if (cellToSubscribe.Value == string.Empty)
+                    {
+                        throw new FormatException($"{variableName} is empty.");
                     }
                     else
                     {
                         // Thrown when parsing value is not a number value.
+                        // This should only be thrown if there is more than one variable in the expression.
+                        // If only one variable, the variable should be the string Value of the cell.
                         // https://docs.microsoft.com/en-us/dotnet/api/system.double.parse?view=net-6.0
-                        throw new FormatException("The variable value could not be parsed to a double.");
-                    }*/
+                        throw new FormatException($"{cellToSubscribe.Value} is not a valid number.");
+                    }
                 }
                 else
                 {
@@ -270,6 +300,8 @@ public class Spreadsheet
                 }
             }
         }
+
+        return null;
     }
 
     /// <summary>
@@ -292,21 +324,31 @@ public class Spreadsheet
                         this.UnsubscribeToEvents(spreadsheetCell);
                         spreadsheetCell.ExpressionTree = new ExpressionTree(expression);
                         this.SubscribeToEvents(spreadsheetCell);
-                        this.SetVariables(spreadsheetCell);
-
-                        int row = spreadsheetCell.RowIndex;
-                        int col = spreadsheetCell.ColumnIndex;
-                        string value = spreadsheetCell.ExpressionTree.Evaluate().ToString();
-                        spreadsheetCell.Value = value;
+                        string? potentialStr = this.SetVariables(spreadsheetCell);
+                        if (potentialStr != null)
+                        {
+                            spreadsheetCell.Value = potentialStr;
+                        }
+                        else
+                        {
+                            spreadsheetCell.Value = spreadsheetCell.ExpressionTree.Evaluate().ToString();
+                        }
                     }
-                    catch (FormatException)
+                    catch (InvalidCastException)
                     {
                         int col = this.GetAZIndex(expression[0]);
                         int row = int.Parse(expression.Substring(1)) - 1;
                         string? value = this.GetCell(row, col)?.Value;
                         if (value != null)
                         {
-                            spreadsheetCell.Value = value;
+                            if (value == string.Empty)
+                            {
+                                spreadsheetCell.Value = $"Referenced an empty cell {expression}.";
+                            }
+                            else
+                            {
+                                spreadsheetCell.Value = value;
+                            }
                         }
                         else
                         {

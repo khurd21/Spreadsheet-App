@@ -7,6 +7,7 @@ namespace Spreadsheet_Kyle_Hurd.SpreadsheetEngine.Test;
 
 using NUnit.Framework;
 using System;
+using System.Linq;
 
 /// <summary>
 /// Initializes the <see cref="TestExpressionTree"/> class.
@@ -179,7 +180,7 @@ public class TestExpressionTree
     public void TestGetVariables(string expression, string[] expected)
     {
         ExpressionTree tree = new ExpressionTree(expression);
-        Nodes.VariableNode[] actual = tree.GetVariables();
+        Nodes.VariableNode[] actual = tree.GetNodes().OfType<Nodes.VariableNode>().ToArray();
         for (int i = 0; i < expected.Length; i++)
         {
             Assert.AreEqual(expected[i], actual[i].Variable);

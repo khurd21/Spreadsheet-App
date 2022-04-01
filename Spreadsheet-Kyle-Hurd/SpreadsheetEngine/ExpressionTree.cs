@@ -81,9 +81,9 @@ public class ExpressionTree
     /// Gets the variables in the expression tree.
     /// </summary>
     /// <returns>A list of variable names.</returns>
-    public Nodes.VariableNode[] GetVariables()
+    public Nodes.Node<double>[] GetNodes()
     {
-        List<Nodes.VariableNode> variables = new List<Nodes.VariableNode>();
+        List<Nodes.Node<double>> variables = new List<Nodes.Node<double>>();
         this.GetVariables(this.Root, variables);
         return variables.ToArray();
     }
@@ -246,17 +246,21 @@ public class ExpressionTree
     }
 
     /// <summary>
-    /// Gets the variables in the expression tree.
+    /// Gets the variables and values in the expression tree.
     /// </summary>
     /// <param name="node">The node in which to start evaluating in the tree.</param>
     /// <param name="vars">The list of variables to add to.</param>
-    private void GetVariables(Nodes.Node<double> node, List<Nodes.VariableNode> vars)
+    private void GetVariables(Nodes.Node<double> node, List<Nodes.Node<double>> vars)
     {
         if (node != null)
         {
             if (node is Nodes.VariableNode variableNode)
             {
                 vars.Add(variableNode);
+            }
+            else if (node is Nodes.ValueNode valueNode)
+            {
+                vars.Add(valueNode);
             }
             else if (node is Nodes.OperatorNode operatorNode)
             {
