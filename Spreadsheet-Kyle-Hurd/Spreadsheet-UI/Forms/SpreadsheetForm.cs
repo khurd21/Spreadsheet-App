@@ -167,4 +167,14 @@ public partial class SpreadsheetForm : Form
             Console.WriteLine(ex.Message);
         }
     }
+
+    /// <summary>
+    /// Modifier when the user clicks on the ClearGrid button. Clears the spreadsheet.
+    /// </summary>
+    /// <param name="sender">The object sending the request.</param>
+    /// <param name="e">The event arguments.</param>
+    private void ButtonClearGrid_Click(object sender, EventArgs e)
+    {
+        this.spreadsheet.ClearCells();
+    }
 }
