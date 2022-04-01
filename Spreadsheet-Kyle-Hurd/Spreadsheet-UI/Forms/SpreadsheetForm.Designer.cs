@@ -56,7 +56,9 @@ partial class SpreadsheetForm
             this.DataGridView.RowTemplate.Height = 41;
             this.DataGridView.Size = new System.Drawing.Size(1266, 772);
             this.DataGridView.TabIndex = 0;
-            this.DataGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView_CellValueChanged);
+            this.DataGridView.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.DataGridView_CellBeginEdit);
+            this.DataGridView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView_CellEndEdit);
+            // this.DataGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView_CellValueChanged);
             // 
             // A
             // 
