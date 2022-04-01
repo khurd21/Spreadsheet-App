@@ -7,6 +7,7 @@ namespace Spreadsheet_Kyle_Hurd.SpreadsheetEngine;
 
 using System.ComponentModel;
 using SpreadsheetEngine.Cells;
+using SpreadsheetEngine.Nodes;
 
 /// <summary>
 /// Initializes the <see cref="Spreadsheet"/> class.
@@ -25,14 +26,14 @@ public class Spreadsheet
     {
         this.Cells = new Cell[numRows, numCols];
 
-        Parallel.For(0, numRows, i =>
+        for (int i = 0; i < numRows; i++)
         {
             for (int j = 0; j < numCols; j++)
             {
                 this.Cells[i, j] = new SpreadsheetCell(i, j);
                 this.Cells[i, j].PropertyChanged += this.CellPropertyChanged;
             }
-        });
+        }
     }
 
     /// <summary>
@@ -79,13 +80,33 @@ public class Spreadsheet
         Cell? cell = this.GetCell(row, col);
         if (cell != null)
         {
-            cell.Text = text;
+            if (cell.Text != text)
+            {
+                cell.Text = text;
+            }
+            else
+            {
+                this.PropertyChanged?.Invoke(cell, new PropertyChangedEventArgs(nameof(Cell)));
+            }
             return 0;
         }
-        else
+        return -1;
+    }
+
+    /// <summary>
+    /// Gets the <see cref="Cell.Text"/> at the specified row and column.
+    /// </summary>
+    /// <param name="row">The specified row for the cell.</param>
+    /// <param name="col">The specified column for the cell.</param>
+    /// <returns>The cell text, if any.</returns>
+    public string GetCellText(int row, int col)
+    {
+        Cell? cell = this.GetCell(row, col);
+        if (cell != null)
         {
-            return -1;
+            return cell.Text;
         }
+        return string.Empty;
     }
 
     /// <summary>
@@ -93,14 +114,14 @@ public class Spreadsheet
     /// </summary>
     public void ClearCells()
     {
-        Parallel.For(0, this.NumRows, i =>
+        for (int i = 0; i < this.NumRows; ++i)
         {
-            for (int j = 0; j < this.NumColumns; j++)
+            for (int j = 0; j < this.NumColumns; ++j)
             {
                 this.Cells[i, j].Text = string.Empty;
                 this.Cells[i, j].Value = string.Empty;
             }
-        });
+        }
     }
 
     /// <summary>
@@ -122,6 +143,27 @@ public class Spreadsheet
     }
 
     /// <summary>
+    /// Gets the cell at the specified cellName.
+    /// A cellName is a string in the format of "A1".
+    /// </summary>
+    /// <param name="cellName">The cellname is the address to locate its cell.</param>
+    /// <returns>The <see cref="Cell"/> at cellName, if it exists.</returns>
+    private Cell? GetCellFromName(string cellName)
+    {
+        cellName = cellName.ToUpper();
+        try
+        {
+            int row = int.Parse(cellName.Substring(1)) - 1;
+            int col = this.GetAZIndex(cellName[0]);
+            return this.GetCell(row, col);
+        }
+        catch (Exception)
+        {
+            return null;
+        }
+    }
+
+    /// <summary>
     /// Gets the cell index given a character from A to Z.
     /// </summary>
     /// <param name="c">The character to be converted to an index.</param>
@@ -132,37 +174,147 @@ public class Spreadsheet
     }
 
     /// <summary>
+    /// Given a <see cref="Cell"/> object, this method will unsubscribe all other cells that were
+    /// previously subscribed to the <see cref="Cell"/>. This is done to ensure the previous <see cref="ExpressionTree"/>
+    /// does not influence the new <see cref="ExpressionTree"/>.
+    /// </summary>
+    /// <param name="cell">The cell for which to make the unsubriptions.</param>
+    /// <exception cref="NodeNotFoundException">Node could not be found.</exception>
+    private void UnsubscribeToEvents(SpreadsheetCell cell)
+    {
+        if (cell.ExpressionTree != null)
+        {
+            VariableNode[] variables = cell.ExpressionTree.GetVariables();
+            foreach (var treeNode in variables)
+            {
+                string variable = treeNode.Variable.ToUpper();
+                Cell? cellToUnsubscribe = this.GetCellFromName(variable);
+                if (cellToUnsubscribe != null)
+                {
+                    cellToUnsubscribe.PropertyChanged -= cell.CellPropertyChanged; // I think I need to have CellpropertyChanged for cells
+                }
+                else
+                {
+                    throw new NodeNotFoundException($"The variable {variable} was not found in the spreadsheet.");
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Given a <see cref="Cell"/> object, this method will subscribe all other cells that are
+    /// referencing the given <see cref="Cell"/>. 
+    /// </summary>
+    /// <param name="cell">The cell for which to make the subscriptions.</param>
+    /// <exception cref="NodeNotFoundException">The node could not be found with the current expression.</exception>
+    private void SubscribeToEvents(SpreadsheetCell cell)
+    {
+        if (cell.ExpressionTree != null)
+        {
+            VariableNode[] variables = cell.ExpressionTree.GetVariables();
+            foreach (var variable in variables)
+            {
+                string variableName = variable.Variable.ToUpper();
+                Cell? cellToSubscribe = this.GetCellFromName(variableName);
+                if (cellToSubscribe != null)
+                {
+                    cellToSubscribe.PropertyChanged += cell.CellPropertyChanged;
+                }
+                else
+                {
+                    throw new NodeNotFoundException($"The variable {variableName} was not found in the spreadsheet.");
+                }
+            }
+        }
+    }
+
+    private void SetVariables(SpreadsheetCell cell)
+    {
+        ExpressionTree? tree = cell.ExpressionTree;
+        if (tree != null)
+        {
+            VariableNode[] variables = tree.GetVariables();
+            foreach (var variable in variables)
+            {
+                string variableName = variable.Variable.ToUpper();
+                SpreadsheetCell? cellToSubscribe = this.GetCellFromName(variableName) as SpreadsheetCell;
+                if (cellToSubscribe != null)
+                {
+                    double.TryParse(cellToSubscribe.Value, out double value);
+                    variable.Value = value;
+                    // What if the cell has a string value?
+                    // Below is skeleton code if ever need be written.
+                    /*if (double.TryParse(cellToSubscribe.Value, out double value))
+                    {
+                        tree.SetVariableValue(variable.Variable, value);
+                    }
+                    else
+                    {
+                        // Thrown when parsing value is not a number value.
+                        // https://docs.microsoft.com/en-us/dotnet/api/system.double.parse?view=net-6.0
+                        throw new FormatException("The variable value could not be parsed to a double.");
+                    }*/
+                }
+                else
+                {
+                    throw new NodeNotFoundException($"The variable {variableName} was not found in the spreadsheet.");
+                }
+            }
+        }
+    }
+
+    /// <summary>
     /// Sets the cell at the specified row and column if there is a property change.
     /// </summary>
     /// <param name="sender">The object sending the property change.</param>
     /// <param name="e">The event arguments.</param>
     private void CellPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        Cell? cell = sender as SpreadsheetCell;
-        if (cell == null)
-        {
-            return;
-        }
-
-        Cell? spreadsheetCell = this.GetCell(cell.RowIndex, cell.ColumnIndex);
+        SpreadsheetCell? spreadsheetCell = sender as SpreadsheetCell;
         if (spreadsheetCell != null)
         {
-            if (spreadsheetCell.Text.Length > 2 && spreadsheetCell.Text[0] == '=')
+            if (e.PropertyName == nameof(Cell.Text).ToLower())
             {
-                int row = int.Parse(spreadsheetCell.Text.Substring(2)) - 1;
-                int col = this.GetAZIndex(char.ToUpper(spreadsheetCell.Text[1]));
-                Cell? cellToCopy = this.GetCell(row, col);
-                if (cellToCopy != null)
+                if (spreadsheetCell.Text.StartsWith("="))
                 {
-                    spreadsheetCell.Value = cellToCopy.Text;
-                }
-            }
-            else
-            {
-                spreadsheetCell.Value = spreadsheetCell.Text;
-            }
+                    string expression = spreadsheetCell.Text.Substring(1);
+                    try
+                    {
+                        this.UnsubscribeToEvents(spreadsheetCell);
+                        spreadsheetCell.ExpressionTree = new ExpressionTree(expression);
+                        this.SubscribeToEvents(spreadsheetCell);
+                        this.SetVariables(spreadsheetCell);
 
-            this.PropertyChanged?.Invoke(spreadsheetCell, new PropertyChangedEventArgs(nameof(Cell)));
+                        int row = spreadsheetCell.RowIndex;
+                        int col = spreadsheetCell.ColumnIndex;
+                        string value = spreadsheetCell.ExpressionTree.Evaluate().ToString();
+                        spreadsheetCell.Value = value;
+                    }
+                    catch (FormatException)
+                    {
+                        int col = this.GetAZIndex(expression[0]);
+                        int row = int.Parse(expression.Substring(1)) - 1;
+                        string? value = this.GetCell(row, col)?.Value;
+                        if (value != null)
+                        {
+                            spreadsheetCell.Value = value;
+                        }
+                        else
+                        {
+                            spreadsheetCell.Value = "Not found.";
+                        }
+                    }
+                    catch (Exception exception)
+                    {
+                        spreadsheetCell.Value = exception.Message;
+                    }
+                }
+                else
+                {
+                    spreadsheetCell.Value = spreadsheetCell.Text;
+                }
+                this.PropertyChanged?.Invoke(spreadsheetCell, new PropertyChangedEventArgs(nameof(Cell)));
+            }
         }
     }
 }

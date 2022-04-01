@@ -35,7 +35,7 @@ public class ExpressionTree
     private Nodes.Node<double> Root { get; set; }
 
     /// <summary>
-    /// Gets the post fix tokens that represent the tree.
+    /// Gets or sets the post fix tokens that represent the tree.
     /// </summary>
     private List<string> PostFixTokens { get; set; }
 

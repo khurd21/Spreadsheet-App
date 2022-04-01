@@ -11,7 +11,7 @@ namespace Spreadsheet_Kyle_Hurd.SpreadsheetEngine.Cells;
 public class SpreadsheetCell : Cell
 {
     /// <summary>
-    /// The expression tree for this cell.
+    /// Gets the expression tree for this cell.
     /// </summary>
     public ExpressionTree? ExpressionTree { get; set; }
 
