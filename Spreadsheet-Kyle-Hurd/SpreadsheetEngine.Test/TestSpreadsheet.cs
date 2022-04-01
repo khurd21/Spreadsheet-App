@@ -98,8 +98,8 @@ public class TestSpreadsheet
         cellName = cellName.ToUpper();
         if (actual != null)
         {
-            Assert.AreEqual(actual.RowIndex, cellName[0] - 'A');
-            Assert.AreEqual(actual.ColumnIndex, int.Parse(cellName.Substring(1)) - 1);
+            Assert.AreEqual(actual.ColumnIndex, cellName[0] - 'A');
+            Assert.AreEqual(actual.RowIndex, int.Parse(cellName.Substring(1)) - 1);
         }
     }
 
