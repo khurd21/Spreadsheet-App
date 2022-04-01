@@ -18,6 +18,36 @@ public class ExpressionTree
     /// <exception cref="ArgumentException">Thrown when the expression is invalid.</exception>
     public ExpressionTree(string expression)
     {
+        this.Expression = string.Empty;
+        this.Root = new Nodes.ValueNode(42);
+        this.PostFixTokens = new List<string>();
+        this.CreateNewTree(expression);
+    }
+
+    /// <summary>
+    /// Gets the expression to represent the tree.
+    /// </summary>
+    public string Expression { get; private set; }
+
+    /// <summary>
+    /// Gets or sets the root of the tree.
+    /// </summary>
+    private Nodes.Node<double> Root { get; set; }
+
+    /// <summary>
+    /// Gets the post fix tokens that represent the tree.
+    /// </summary>
+    private List<string> PostFixTokens { get; set; }
+
+    /// <summary>
+    /// Creates a new tree to be evaluated. This should be used when you no longer
+    /// want to use the previous expression. All variables previously set will be
+    /// lost.
+    /// </summary>
+    /// <param name="expression">The expression for evaluation.</param>
+    /// <exception cref="ArgumentException">Thrown when an invalid expression is passed in.</exception>
+    public void CreateNewTree(string expression)
+    {
         List<char> keys = Nodes.NodeFactory.GetOperators();
         if (ExpressionValidator.IsExpression(expression, keys))
         {
@@ -30,21 +60,6 @@ public class ExpressionTree
             throw new ArgumentException("Invalid expression given to ExpressionTree.");
         }
     }
-
-    /// <summary>
-    /// Gets the expression to represent the tree.
-    /// </summary>
-    public string Expression { get; }
-
-    /// <summary>
-    /// Gets or sets the root of the tree.
-    /// </summary>
-    private Nodes.Node<double> Root { get; set; }
-
-    /// <summary>
-    /// Gets the post fix tokens that represent the tree.
-    /// </summary>
-    private List<string> PostFixTokens { get; }
 
     /// <summary>
     /// Evaluates the expression tree.
@@ -66,9 +81,9 @@ public class ExpressionTree
     /// Gets the variables in the expression tree.
     /// </summary>
     /// <returns>A list of variable names.</returns>
-    public string[] GetVariables()
+    public Nodes.VariableNode[] GetVariables()
     {
-        List<string> variables = new List<string>();
+        List<Nodes.VariableNode> variables = new List<Nodes.VariableNode>();
         this.GetVariables(this.Root, variables);
         return variables.ToArray();
     }
@@ -89,19 +104,18 @@ public class ExpressionTree
     /// </summary>
     /// <param name="node">The node in which to start evaluating in the tree.</param>
     /// <param name="vars">The list of variables to add to.</param>
-    private void GetVariables(Nodes.Node<double> node, List<string> vars)
+    private void GetVariables(Nodes.Node<double> node, List<Nodes.VariableNode> vars)
     {
         if (node != null)
         {
-        
             if (node is Nodes.VariableNode variableNode)
             {
-                vars.Add(variableNode.Variable);
+                vars.Add(variableNode);
             }
             else if (node is Nodes.OperatorNode operatorNode)
             {
-                GetVariables(operatorNode.Left!, vars);
-                GetVariables(operatorNode.Right!, vars);
+                this.GetVariables(operatorNode.Left!, vars);
+                this.GetVariables(operatorNode.Right!, vars);
             }
         }
     }
