@@ -5,7 +5,7 @@
 
 namespace Spreadsheet_Kyle_Hurd.ExpressionTreeConsole;
 
-using Spreadsheet_Kyle_Hurd.SpreadsheetEngine;
+using Spreadsheet_Kyle_Hurd.SpreadsheetEngine.Expressions;
 using System;
 
 /// <summary>

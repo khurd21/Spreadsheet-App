@@ -38,10 +38,11 @@ public partial class SpreadsheetForm : Form
     {
         if (sender is Cell)
         {
-            Cell? cell = sender as Cell;
+            SpreadsheetCell? cell = sender as SpreadsheetCell;
             if (cell != null)
             {
                 this.DataGridView.Rows[cell.RowIndex].Cells[cell.ColumnIndex].Value = cell.Value;
+                this.DataGridView.Rows[cell.RowIndex].Cells[cell.ColumnIndex].Style.BackColor = cell.BackColor;
             }
         }
     }
@@ -110,17 +111,17 @@ public partial class SpreadsheetForm : Form
             // Randomly select a column and row between 0 and columns and rows
             int column = random.Next(0, columns);
             int row = random.Next(0, rows);
-            this.spreadsheet.UpdateCellText(row, column, message);
+            this.spreadsheet.TriggerUpdateCellText(row, column, message);
         }
 
         for (int row = 0; row < rows; ++row)
         {
-            this.spreadsheet.UpdateCellText(row, 1, $"This is cell B{row + 1}");
+            this.spreadsheet.TriggerUpdateCellText(row, 1, $"This is cell B{row + 1}");
         }
 
         for (int row = 0; row < rows; ++row)
         {
-            this.spreadsheet.UpdateCellText(row, 0, $"=B{row + 1}");
+            this.spreadsheet.TriggerUpdateCellText(row, 0, $"=B{row + 1}");
         }
     }
 
@@ -159,7 +160,7 @@ public partial class SpreadsheetForm : Form
             string? message = this.DataGridView[col, row].Value.ToString();
             if (message != null)
             {
-                this.spreadsheet.UpdateCellText(row, col, message);
+                this.spreadsheet.TriggerUpdateCellText(row, col, message);
             }
         }
         catch (Exception ex)
@@ -176,5 +177,69 @@ public partial class SpreadsheetForm : Form
     private void ButtonClearGrid_Click(object sender, EventArgs e)
     {
         this.spreadsheet.ClearCells();
+    }
+
+    /// <summary>
+    /// Modifier when the user clicks on the change color button.
+    /// Updates the color of the cell by updating value from
+    /// <see cref="SpreadsheetCell.BackColor"/>.
+    /// </summary>
+    /// <param name="sender">The object sending the Click event.</param>
+    /// <param name="e">The event arguments.</param>
+    private void ChangeColorToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        ColorDialog colorDialog = new ColorDialog();
+        if (colorDialog.ShowDialog() == DialogResult.OK)
+        {
+            DataGridViewSelectedCellCollection cells = this.DataGridView.SelectedCells;
+            List<SpreadsheetCell> spreadsheetCells = cells
+                                                        .Cast<DataGridViewCell>()
+                                                        .Select(cell => new SpreadsheetCell(cell.RowIndex, cell.ColumnIndex))
+                                                        .ToList();
+            this.spreadsheet.TriggerUpdateCellColor(spreadsheetCells, colorDialog.Color);
+        }
+    }
+
+    /// <summary>
+    /// Modifier when the user clicks on the edit tool strip button.
+    /// Updates the state of the button depending if there are items
+    /// to undo or redo.
+    /// </summary>
+    /// <param name="sender">The thing sending the click event.</param>
+    /// <param name="e">The event arguments.</param>
+    private void EditToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        this.UndoToolStripMenuItem.Enabled = this.spreadsheet.CanUndo();
+        this.RedoToolStripMenuItem.Enabled = this.spreadsheet.CanRedo();
+
+        if (this.RedoToolStripMenuItem.Enabled == true)
+        {
+            this.RedoToolStripMenuItem.Text = $"Redo {this.spreadsheet.GetRedoTopAction()}";
+        }
+
+        if (this.UndoToolStripMenuItem.Enabled == true)
+        {
+            this.UndoToolStripMenuItem.Text = $"Undo {this.spreadsheet.GetUndoTopAction()}";
+        }
+    }
+
+    /// <summary>
+    /// Modifier when the user clicks on the undo button.
+    /// </summary>
+    /// <param name="sender">The thing sending the click event.</param>
+    /// <param name="e">The event arguments.</param>
+    private void UndoToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        this.spreadsheet.Undo();
+    }
+
+    /// <summary>
+    /// Modifier when the user clicks on the redo button.
+    /// </summary>
+    /// <param name="sender">The thing sending the click event.</param>
+    /// <param name="e">The event arguments.</param>
+    private void RedoToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        this.spreadsheet.Redo();
     }
 }
