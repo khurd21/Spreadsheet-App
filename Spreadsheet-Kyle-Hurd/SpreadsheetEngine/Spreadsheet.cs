@@ -7,13 +7,16 @@ namespace Spreadsheet_Kyle_Hurd.SpreadsheetEngine;
 
 using System.ComponentModel;
 using System.Linq;
+using System.Drawing;
 using SpreadsheetEngine.Cells;
 using SpreadsheetEngine.Nodes;
+using SpreadsheetEngine.Expressions;
+using SpreadsheetEngine.Commands;
 
 /// <summary>
 /// Initializes the <see cref="Spreadsheet"/> class.
 /// </summary>
-public class Spreadsheet
+public partial class Spreadsheet
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="Spreadsheet"/> class.
@@ -25,6 +28,7 @@ public class Spreadsheet
     /// <param name="numCols">The number of columns for the Spreadsheet application.</param>
     public Spreadsheet(int numRows, int numCols)
     {
+        this.UndoRedoManager = new UndoRedo();
         this.Cells = new Cell[numRows, numCols];
 
         for (int i = 0; i < numRows; i++)
@@ -70,33 +74,6 @@ public class Spreadsheet
     private Cell[,] Cells { get; set; }
 
     /// <summary>
-    /// Updates the cell text at the specified row and column.
-    /// </summary>
-    /// <param name="row">The row to find the cell.</param>
-    /// <param name="col">The column to find the cell.</param>
-    /// <param name="text">The text to set the cell to.</param>
-    /// <returns>0 if no errors, -1 otherwise.</returns>
-    public int UpdateCellText(int row, int col, string text)
-    {
-        Cell? cell = this.GetCell(row, col);
-        if (cell != null)
-        {
-            if (cell.Text != text)
-            {
-                cell.Text = text;
-            }
-            else
-            {
-                this.PropertyChanged?.Invoke(cell, new PropertyChangedEventArgs(nameof(Cell)));
-            }
-
-            return 0;
-        }
-
-        return -1;
-    }
-
-    /// <summary>
     /// Gets the <see cref="Cell.Text"/> at the specified row and column.
     /// </summary>
     /// <param name="row">The specified row for the cell.</param>
@@ -122,8 +99,71 @@ public class Spreadsheet
         {
             for (int j = 0; j < this.NumColumns; ++j)
             {
-                this.Cells[i, j].Text = string.Empty;
-                this.Cells[i, j].Value = string.Empty;
+                SpreadsheetCell cell = (this.Cells[i, j] as SpreadsheetCell) !;
+                cell.Text = string.Empty;
+                cell.Value = string.Empty;
+                cell.SetBackColor(Color.White);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Updates the cell text at the specified row and column.
+    /// </summary>
+    /// <param name="row">The row to find the cell.</param>
+    /// <param name="col">The column to find the cell.</param>
+    /// <param name="text">The text to set the cell to.</param>
+    /// <returns>0 if no errors, -1 otherwise.</returns>
+    private int UpdateCellText(int row, int col, string text)
+    {
+        Cell? cell = this.GetCell(row, col);
+        if (cell != null)
+        {
+            if (cell.Text != text)
+            {
+                cell.Text = text;
+            }
+            else
+            {
+                this.PropertyChanged?.Invoke(cell, new PropertyChangedEventArgs(nameof(Cell)));
+            }
+
+            return 0;
+        }
+
+        return -1;
+    }
+
+    /// <summary>
+    /// Updates the cell color at the specified row and column.
+    /// </summary>
+    /// <param name="row">The row of the cell.</param>
+    /// <param name="col">The column of the cell.</param>
+    /// <param name="color">The color to set the cell.</param>
+    private void UpdateCellColor(int row, int col, Color color)
+    {
+        SpreadsheetCell? cell = this.GetCell(row, col) as SpreadsheetCell;
+        if (cell != null && cell.BackColor != color)
+        {
+            cell.SetBackColor(color);
+        }
+    }
+
+    /// <summary>
+    /// Updates the cell color at the specified row and column.
+    /// </summary>
+    /// <param name="cells">The list of cells that are being changed.</param>
+    /// <param name="color">The color to set the cell.</param>
+    private void UpdateCellColor(List<SpreadsheetCell> cells, Color color)
+    {
+        foreach (SpreadsheetCell copyCell in cells)
+        {
+            int row = copyCell.RowIndex;
+            int col = copyCell.ColumnIndex;
+            SpreadsheetCell? cell = this.GetCell(row, col) as SpreadsheetCell;
+            if (cell != null)
+            {
+                cell.SetBackColor(color);
             }
         }
     }
@@ -364,9 +404,9 @@ public class Spreadsheet
                 {
                     spreadsheetCell.Value = spreadsheetCell.Text;
                 }
-
-                this.PropertyChanged?.Invoke(spreadsheetCell, new PropertyChangedEventArgs(nameof(Cell)));
             }
+
+            this.PropertyChanged?.Invoke(spreadsheetCell, new PropertyChangedEventArgs(nameof(Cell)));
         }
     }
 }

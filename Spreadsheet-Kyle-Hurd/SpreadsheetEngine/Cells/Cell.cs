@@ -131,6 +131,12 @@ public abstract class Cell : INotifyPropertyChanged
     }
 
     /// <summary>
+    /// Abstract method that produces a shallow copy of the cell.
+    /// </summary>
+    /// <returns>A shallow copy of the cell.</returns>
+    public abstract Cell ShallowCopy();
+
+    /// <summary>
     /// Notifies of a property changed given the name of the property.
     /// </summary>
     /// <param name="sender">The sender sending the property changed event.</param>
@@ -148,7 +154,7 @@ public abstract class Cell : INotifyPropertyChanged
     /// avoid the null reference exception.
     /// </summary>
     /// <param name="propertyName">The property name that is to trigger event change.</param>
-    private void OnPropertyChanged(string propertyName)
+    protected void OnPropertyChanged(string propertyName)
     {
         var handler = this.PropertyChanged;
         if (handler != null)

@@ -5,6 +5,7 @@
 
 namespace Spreadsheet_Kyle_Hurd.SpreadsheetEngine.Test;
 
+using SpreadsheetEngine.Expressions;
 using NUnit.Framework;
 using System.Linq;
 using System;
