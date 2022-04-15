@@ -1,0 +1,11 @@
+<Spreadsheet>
+    <Cell>
+        <InvalidTagName>Invalid text</InvalidTagName>
+        <Name>B4</Name>
+        <Contents>1</Contents>
+    </Cell>
+    <Cell>
+        <Name>A2</Name>
+        <Contents>2</Contents>
+    </Cell>
+</Spreadsheet>
