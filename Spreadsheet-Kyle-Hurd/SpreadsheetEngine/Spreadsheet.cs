@@ -95,6 +95,8 @@ public partial class Spreadsheet
     /// </summary>
     public void ClearCells()
     {
+        this.UndoRedoManager.RedoStack.Clear();
+        this.UndoRedoManager.UndoStack.Clear();
         for (int i = 0; i < this.NumRows; ++i)
         {
             for (int j = 0; j < this.NumColumns; ++j)
@@ -215,6 +217,17 @@ public partial class Spreadsheet
     private int GetAZIndex(char c)
     {
         return c - 'A';
+    }
+
+    /// <summary>
+    /// Returns the name of the cell at the specified row and column.
+    /// </summary>
+    /// <param name="row">The row of the cell.</param>
+    /// <param name="col">The column of the cell.</param>
+    /// <returns>The string representation of the cell at the row and col.</returns>
+    private string GetCellNameFromIndex(int row, int col)
+    {
+        return $"{(char)(col + 'A')}{row + 1}";
     }
 
     /// <summary>

@@ -242,4 +242,54 @@ public partial class SpreadsheetForm : Form
     {
         this.spreadsheet.Redo();
     }
+
+    /// <summary>
+    /// Modifier when the user clicks on the save button.
+    /// </summary>
+    /// <param name="sender">The object sending the click event.</param>
+    /// <param name="e">The event arguments.</param>
+    private void SaveToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        SaveFileDialog saveFileDialog = new SaveFileDialog();
+        saveFileDialog.Filter = "XML Files (*.xml)|*.xml";
+        saveFileDialog.FilterIndex = 1;
+        saveFileDialog.RestoreDirectory = true;
+
+        if (saveFileDialog.ShowDialog() == DialogResult.OK)
+        {
+            try
+            {
+                this.spreadsheet.Save(saveFileDialog.FileName);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Modifier when the user clicks on the load button.
+    /// </summary>
+    /// <param name="sender">The object sending the event.</param>
+    /// <param name="e">The event arguments.</param>
+    private void LoadToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        OpenFileDialog openFileDialog = new OpenFileDialog();
+        openFileDialog.Filter = "XML Files (*.xml)|*.xml";
+        openFileDialog.FilterIndex = 1;
+        openFileDialog.RestoreDirectory = true;
+
+        if (openFileDialog.ShowDialog() == DialogResult.OK)
+        {
+            try
+            {
+                this.spreadsheet.Load(openFileDialog.FileName);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+    }
 }

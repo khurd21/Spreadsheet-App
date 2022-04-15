@@ -14,6 +14,11 @@ using System.Drawing;
 public class SpreadsheetCell : Cell
 {
     /// <summary>
+    /// Sets the color of this cell.
+    /// </summary>
+    public static readonly Color DefaultBackColor = Color.White;
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="SpreadsheetCell"/> class.
     /// </summary>
     /// <param name="rowIndex">The row index this cell will represent.</param>
@@ -21,7 +26,7 @@ public class SpreadsheetCell : Cell
     public SpreadsheetCell(int rowIndex, int columnIndex)
         : base(rowIndex, columnIndex)
         {
-            this.BackColor = Color.White;
+            this.BackColor = DefaultBackColor;
         }
 
     /// <summary>
@@ -31,7 +36,7 @@ public class SpreadsheetCell : Cell
     public SpreadsheetCell()
         : base()
         {
-            this.BackColor = Color.White;
+            this.BackColor = DefaultBackColor;
         }
 
     /// <summary>

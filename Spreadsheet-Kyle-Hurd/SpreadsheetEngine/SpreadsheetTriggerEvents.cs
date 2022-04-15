@@ -41,6 +41,18 @@ public partial class Spreadsheet
 
     /// <summary>
     /// A trigger to be executed when a cell is changed from the ui side.
+    /// </summary>
+    /// <param name="row">The row of the cell.</param>
+    /// <param name="col">The column of the cell.</param>
+    /// <param name="color">The color to be assigned to the cell.</param>
+    public void TriggerUpdateCellColor(int row, int col, Color color)
+    {
+        this.UndoRedoManager.AddCommand(new MultipleCellCommand((SpreadsheetCell)this.GetCell(row, col) !, $"set background color to {color.Name}"));
+        this.UpdateCellColor(row, col, color);
+    }
+
+    /// <summary>
+    /// A trigger to be executed when a cell is changed from the ui side.
     /// updates the cell color.
     /// </summary>
     /// <param name="row">The row of the cell.</param>
