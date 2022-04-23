@@ -11,6 +11,7 @@ using System.Drawing;
 using SpreadsheetEngine.Cells;
 using SpreadsheetEngine.Nodes;
 using SpreadsheetEngine.Expressions;
+using SpreadsheetEngine.Exceptions;
 using SpreadsheetEngine.Commands;
 
 /// <summary>
@@ -102,6 +103,7 @@ public partial class Spreadsheet
             for (int j = 0; j < this.NumColumns; ++j)
             {
                 SpreadsheetCell cell = (this.Cells[i, j] as SpreadsheetCell) !;
+                this.UnsubscribeToEvents(cell);
                 cell.Text = string.Empty;
                 cell.Value = string.Empty;
                 cell.SetBackColor(Color.White);
@@ -358,6 +360,40 @@ public partial class Spreadsheet
     }
 
     /// <summary>
+    /// Checks the current cell's a node will need to access and checks if any cycles exist in the tree.
+    /// </summary>
+    /// <param name="nodes">The nodes that are in the initial expression.</param>
+    /// <param name="target">The target to look out for a potential match (the caller).</param>
+    /// <exception cref="SpreadsheetCircularDependenceException">Custom exception for when cycles are detected.</exception>
+    private void CheckCircularReference(Node<double>[] nodes, SpreadsheetCell target)
+    {
+        foreach (Node<double> node in nodes)
+        {
+            if (node is not VariableNode)
+            {
+                continue;
+            }
+
+            VariableNode varNode = (node as VariableNode) !;
+            SpreadsheetCell? cellToCheck = this.GetCellFromName(varNode.Variable.ToUpper()) as SpreadsheetCell;
+            if (cellToCheck == null)
+            {
+                continue;
+            }
+
+            if (cellToCheck == target)
+            {
+                throw new SpreadsheetCircularDependenceException($"Circular reference detected: {varNode.Variable}");
+            }
+
+            if (cellToCheck?.ExpressionTree != null)
+            {
+                this.CheckCircularReference(cellToCheck.ExpressionTree.GetNodes().OfType<VariableNode>().ToArray(), target);
+            }
+        }
+    }
+
+    /// <summary>
     /// Sets the cell at the specified row and column if there is a property change.
     /// </summary>
     /// <param name="sender">The object sending the property change.</param>
@@ -371,11 +407,13 @@ public partial class Spreadsheet
             {
                 if (spreadsheetCell.Text.StartsWith("="))
                 {
+                    ExpressionTree? tree = spreadsheetCell.ExpressionTree;
                     string expression = spreadsheetCell.Text.Substring(1);
                     try
                     {
                         this.UnsubscribeToEvents(spreadsheetCell);
                         spreadsheetCell.ExpressionTree = new ExpressionTree(expression);
+                        this.CheckCircularReference(spreadsheetCell.ExpressionTree.GetNodes(), spreadsheetCell);
                         this.SubscribeToEvents(spreadsheetCell);
                         string? potentialStr = this.SetVariables(spreadsheetCell);
                         if (potentialStr != null)
@@ -386,6 +424,12 @@ public partial class Spreadsheet
                         {
                             spreadsheetCell.Value = spreadsheetCell.ExpressionTree.Evaluate().ToString();
                         }
+                    }
+                    catch (SpreadsheetCircularDependenceException)
+                    {
+                        spreadsheetCell.Value = "Circular Reference";
+                        spreadsheetCell.ExpressionTree = tree;
+                        this.SubscribeToEvents(spreadsheetCell);
                     }
                     catch (InvalidCastException)
                     {

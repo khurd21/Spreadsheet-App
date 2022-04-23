@@ -1,0 +1,15 @@
+<Spreadsheet>
+    <Cell>
+        <Name>A1</Name>
+        <Contents>=A1</Contents>
+        <Color>FF8988</Color>
+    </Cell>
+    <Cell>
+        <Name>A2</Name>
+        <Contents>=A3</Contents>
+    </Cell>
+    <Cell>
+        <Name>A3</Name>
+        <Color>FFF999</Color>
+    </Cell>
+</Spreadsheet>

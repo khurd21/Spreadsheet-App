@@ -7,6 +7,7 @@ namespace Spreadsheet_Kyle_Hurd.SpreadsheetEngine.Test;
 
 using NUnit.Framework;
 using SpreadsheetEngine.Cells;
+using Exceptions;
 using System.Drawing;
 using System.IO;
 using System;

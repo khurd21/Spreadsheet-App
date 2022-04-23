@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Spreadsheet>
+  <Cell>
+    <Name>B1</Name>
+    <Contents>Cell 01</Contents>
+  </Cell>
+  <Cell>
+    <Name>B2</Name>
+    <Contents>Cell 11</Contents>
+    <Color>FFFF0000</Color>
+  </Cell>
+</Spreadsheet>
