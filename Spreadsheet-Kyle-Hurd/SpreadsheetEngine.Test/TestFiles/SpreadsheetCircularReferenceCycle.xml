@@ -1,0 +1,23 @@
+<!-- It must be the case a cycle returns to the updated node (A1) -->
+<Spreadsheet>
+    <Cell>
+        <Name>A1</Name>
+        <Contents>=B1</Contents>
+        <Color>FF8988</Color>
+    </Cell>
+    <Cell>
+        <Name>B1</Name>
+        <Contents>=C1</Contents>
+        <Color>FF8988</Color>
+    </Cell>
+    <Cell>
+        <Name>C1</Name>
+        <Contents>=D1</Contents>
+        <Color>FF8988</Color>
+    </Cell>
+    <Cell>
+        <Name>D1</Name>
+        <Contents>=A1</Contents>
+        <Color>FF8988</Color>
+    </Cell>
+</Spreadsheet>

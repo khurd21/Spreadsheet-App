@@ -8,8 +8,11 @@ using NUnit.Framework;
 namespace Spreadsheet_Kyle_Hurd.SpreadsheetEngine.Test;
 
 using System;
+using System.IO;
 using Spreadsheet_Kyle_Hurd.SpreadsheetEngine;
 using Spreadsheet_Kyle_Hurd.SpreadsheetEngine.Cells;
+using Expressions;
+using Exceptions;
 
 /// <summary>
 /// Initializes the <see cref="TestSpreadsheet"/> class.
@@ -27,6 +30,42 @@ public class TestSpreadsheet
         new object[] { 10, 5 },
         new object[] { 5, 10 },
     };
+
+    /// <summary>
+    /// Tests the Evaluate method when there are circular dependencies.
+    /// </summary>
+    private static readonly object[] EvaluateWithVariablesCircularTestCases =
+    {
+        new object[]
+        {
+            Path.GetFullPath("../../../TestFiles/SpreadsheetCircularReferenceCycle.xml", Environment.CurrentDirectory),
+            "A1",
+        },
+        new object[]
+        {
+            Path.GetFullPath("../../../TestFiles/SpreadsheetCircularSelfReference.xml", Environment.CurrentDirectory),
+            "A1",
+        },
+    };
+
+    /// <summary>
+    /// Tests the Evaluate method when there are circular dependencies.
+    /// A circular dependency occurs when the <see cref="ExpressionTree"/>
+    /// contains a reference that eventually leads to the same cell.
+    /// </summary>
+    /// <param name="filePath">The file path to the spreadsheet.</param>
+    /// <param name="cellName">The name of the cell that has a circular reference.</param>
+    [Test]
+    [TestCaseSource(nameof(EvaluateWithVariablesCircularTestCases))]
+    public void TestCircularDependence(string filePath, string cellName)
+    {
+        Spreadsheet spreadsheet = new (10, 10);
+        PrivateObject privateObject = new PrivateObject(spreadsheet);
+        spreadsheet.Load(filePath);
+        SpreadsheetCell? cell = privateObject.Invoke("GetCellFromName", cellName) as SpreadsheetCell;
+        bool actual = cell!.Value.Contains("Circular");
+        Assert.IsTrue(actual);
+    }
 
     /// <summary>
     /// Temlate test for the Cell class.

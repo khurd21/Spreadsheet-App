@@ -5,6 +5,7 @@
 
 namespace Spreadsheet_Kyle_Hurd.SpreadsheetEngine;
 
+using Exceptions;
 using System.Xml.Linq;
 using SpreadsheetEngine.Cells;
 using System.Drawing;
