@@ -8,6 +8,7 @@ performed in the app.
 
 ## How To Build
 
+<b>Only compatible with Windows OS</b>  
 Build Solution: `dotnet build`  
 Run Tests: `dotnet test .\Spreadsheet-Kyle-Hurd\SpreadsheetEngine.Test\`  
 Run UI: `dotnet run --project .\Spreadsheet-Kyle-Hurd\Spreadsheet-UI\`  
